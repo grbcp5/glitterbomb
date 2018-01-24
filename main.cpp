@@ -1,8 +1,12 @@
 #include <iostream>
+#include "Puzzle.h"
 
 using namespace std;
 
 int main() {
-  cout << "Hello, World!" << endl;
+
+  Puzzle *p1 = Puzzle::construct( "puzzles/puzzle1.txt" );
+  cout << (*p1) << endl;
+
   return 0;
 }
