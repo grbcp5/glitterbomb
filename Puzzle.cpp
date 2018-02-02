@@ -23,8 +23,7 @@ Puzzle::Puzzle(
     const uint32 grid_width,
     const uint32 grid_height,
     const uint32 pool_height,
-    const uint32 bonus_rules,
-    const uint32 total_height
+    const uint32 bonus_rules
 )
     :
     m_grid( NULL ),
@@ -36,9 +35,7 @@ Puzzle::Puzzle(
     m_grid_width( grid_width ),
     m_grid_height( grid_height ),
     m_pool_height( pool_height ),
-    m_bonus_rules( bonus_rules ),
-    m_total_height( total_height )
-{
+    m_bonus_rules( bonus_rules ) {
 
   m_grid = new uint8 *[m_grid_height];
   for ( int r = 0; r < m_grid_height; r++ ) {
@@ -62,7 +59,6 @@ Puzzle::Puzzle(
     const uint32 grid_height,
     const uint32 pool_height,
     const uint32 bonus_rules,
-    const uint32 total_height,
     const uint8 **grid
 )
     :
@@ -75,9 +71,7 @@ Puzzle::Puzzle(
     m_grid_width( grid_width ),
     m_grid_height( grid_height ),
     m_pool_height( pool_height ),
-    m_bonus_rules( bonus_rules ),
-    m_total_height( total_height )
-{
+    m_bonus_rules( bonus_rules ) {
   m_grid = copyGrid( grid, m_grid_height, m_grid_width );
 }
 
@@ -93,23 +87,21 @@ Puzzle::Puzzle( const Puzzle &cpy ) :
     m_grid_width( cpy.m_grid_width ),
     m_grid_height( cpy.m_grid_height ),
     m_pool_height( cpy.m_pool_height ),
-    m_bonus_rules( cpy.m_bonus_rules ),
-    m_total_height( cpy.m_total_height )
-{
+    m_bonus_rules( cpy.m_bonus_rules ) {
   m_grid = cpy.getCopyOfGrid();
 }
 
 
 /* Destructor */
 Puzzle::~Puzzle() {
-  for( int r = 0; r < m_grid_height; r++ ) {
-    delete [] m_grid[ r ];
+  for ( int r = 0; r < m_grid_height; r++ ) {
+    delete[] m_grid[ r ];
   }
-  delete [] m_grid;
+  delete[] m_grid;
 }
 
-/*   Commented out because not currently in use
-Puzzle *Puzzle::construct(std::istream &in) {
+
+Puzzle *Puzzle::construct( std::istream &in ) {
   uint32 quota, num_swaps, num_device_types, grid_width, grid_height,
       pool_height, bonus_rules;
 
@@ -119,40 +111,39 @@ Puzzle *Puzzle::construct(std::istream &in) {
      >> pool_height >> bonus_rules;
 
   Puzzle *result = new Puzzle(
-      (uint32)quota,
+      ( uint32 ) quota,
       num_swaps,
       num_device_types,
       grid_width,
       grid_height,
       pool_height,
-      bonus_rules,
-      pool_height + grid_height
+      bonus_rules
   );
 
-  for( int r = 0; r < result->m_grid_height; r++ ) {
-    for( int c = 0; c < result->m_grid_width; c++ ) {
+  for ( int r = 0; r < result->m_grid_height; r++ ) {
+    for ( int c = 0; c < result->m_grid_width; c++ ) {
       in >> grid_value;
-      result->m_grid[ r ][ c ] = ( uint8 )grid_value;
+      result->m_grid[ r ][ c ] = ( uint8 ) grid_value;
     }
   }
 
   return result;
 }
 
-/*   Commented out because not currently in use
-Puzzle *Puzzle::construct(const char *fileName) {
+
+Puzzle *Puzzle::construct( const char *fileName ) {
   Puzzle *result = NULL;
 
   std::ifstream fin;
-  fin.open(fileName);
+  fin.open( fileName );
   result = construct( fin );
   fin.close();
 
   return result;
-} */
+}
 
 
-std::ostream &operator<<(std::ostream &out, const Puzzle &p) {
+std::ostream &operator<<( std::ostream &out, const Puzzle &p ) {
 
   out << "Quota: " << p.m_quota
       << "\nAllowed Swaps: " << p.m_num_swaps
@@ -161,9 +152,17 @@ std::ostream &operator<<(std::ostream &out, const Puzzle &p) {
       << "\nPool Height: " << p.m_pool_height
       << "\nPuzzle Values:" << std::endl;
 
-  for( int r = 0; r < p.m_grid_height; r++ ) {
-    for( int c = 0; c < p.m_grid_width; c++ ) {
-      out << ( ( int ) p.m_grid[ r ][ c ] ) << " ";
+  for ( int r = 0; r < p.m_grid_height; r++ ) {
+
+    if ( r == p.m_pool_height ) {
+      for ( int i = 0; i < ( 2 * p.m_grid_width ); ++i ) {
+        out << "-";
+      }
+      out << std::endl;
+    }
+
+    for ( int c = 0; c < p.m_grid_width; c++ ) {
+      out << (( int ) p.m_grid[ r ][ c ] ) << " ";
     }
     out << std::endl;
   }
@@ -189,7 +188,8 @@ void Puzzle::swap( Point from, Point to ) {
 uint8 Puzzle::getDeviceType( Point p ) const {
 
   /* Return no device if out of bounds */
-  if ( p.row >= m_grid_height || p.col >= m_grid_width ) {
+  if ( p.row < m_pool_height ||
+       p.row >= m_grid_height || p.col >= m_grid_width ) {
     return Puzzle::NO_DEVICE;
   }
 
