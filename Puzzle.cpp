@@ -210,6 +210,10 @@ uint8 **Puzzle::getCopyOfGrid() const {
   );
 }
 
+bool Puzzle::isSolved() const {
+  return !m_quota;
+}
+
 uint8 **copyGrid(
     const uint8 **const m_grid,
     const uint32 m_grid_height,

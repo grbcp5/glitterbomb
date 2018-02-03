@@ -65,6 +65,8 @@ public:
 
     uint8 **getCopyOfGrid() const;
 
+    bool isSolved() const;
+
     /* Static functions */
     static Puzzle *construct(std::istream &in);
 
