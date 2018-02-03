@@ -60,7 +60,9 @@ public:
     ~Puzzle();
 
     /* Member functions */
-    void swap( Point from, Point to );
+    void swap( const Point from, const Point to );
+
+    void makeMove( const Move &m );
 
     uint8 getDeviceType( Point p ) const;
 

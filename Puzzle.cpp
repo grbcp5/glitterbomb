@@ -190,8 +190,12 @@ void swap( uint8 **m_grid, Point from, Point to ) {
   return;
 }
 
-void Puzzle::swap( Point from, Point to ) {
+void Puzzle::swap( const Point from, const Point to ) {
   ::swap( m_grid, from, to );
+}
+
+void Puzzle::makeMove( const Move &m ) {
+  ::swap( m_grid, m.from, m.to );
 }
 
 uint8 Puzzle::getDeviceType( Point p ) const {
@@ -222,6 +226,7 @@ uint8 **Puzzle::getCopyOfGrid() const {
 bool Puzzle::isSolved() const {
   return !m_quota;
 }
+
 
 uint8 **copyGrid(
     const uint8 **const m_grid,
