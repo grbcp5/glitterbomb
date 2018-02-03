@@ -268,15 +268,15 @@ uint32 resultingPointsFromMove(
 }
 
 
-vector< Move > getLegalMoves( const Puzzle *p ) {
+vector< Move > *getLegalMoves( const Puzzle *p ) {
 
   /* Local Constants */
   const Direction DIRS[] = { RIGHT, DOWN };
   const uint32 DIR_COUNT = 2;
 
   /* Local Variables */
-  vector< Move > result;
-  uint32 points;
+  vector< Move > *result = new vector< Move >();
+  uint32 points( 0 );
 
   /* For each row in grid */
   for ( uint32 r = p->m_pool_height; r < ( p->m_grid_height - 1 ); r++ ) {
@@ -298,7 +298,7 @@ vector< Move > getLegalMoves( const Puzzle *p ) {
         if ( points > 0 ) {
 
           /* Add to list of legal Moves */
-          result.push_back(
+          result->push_back(
               Move(
                   Point( r, c ),
                   formulatePoint( r, c, static_cast<Direction>( d )

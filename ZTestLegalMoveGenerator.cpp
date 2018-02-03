@@ -40,7 +40,7 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
 
   /* Local Variables */
   Puzzle *puzzle;
-  vector< Move > ret_val;
+  vector< Move > *ret_val;
   Move curMove;
 
   /* Execute each test case */
@@ -59,13 +59,13 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
     ret_val = getLegalMoves( puzzle );
 
     /* Return error if no legal moves found */
-    if ( !ret_val.size()) {
+    if ( !ret_val->size()) {
       return testID;
     }
 
     /* Print out all legal moves */
-    for ( int i = 0; i < ret_val.size(); ++i ) {
-      curMove = ret_val[ i ];
+    for ( uint32 i = 0; i < ret_val->size(); ++i ) {
+      curMove = ret_val->at( i );
 
       cout << i << ": "
            << "(r:" << curMove.from.row << ",c:" << curMove.from.col << ") "
@@ -75,6 +75,7 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
 
     /* Delete dynamic memory */
     delete puzzle;
+    delete ret_val;
 
   }
 
