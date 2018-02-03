@@ -5,6 +5,8 @@
 #ifndef GLITTERBOMB_SEARCHER_H
 #define GLITTERBOMB_SEARCHER_H
 
+#include <vector>
+
 #include "types.h"
 #include "Puzzle.h"
 
@@ -58,6 +60,8 @@ public:
     Move *getAction() const;
 
     uint32 getPathCost() const;
+
+    std::vector< Move > *getAllActions() const;
 };
 
 class Searcher {

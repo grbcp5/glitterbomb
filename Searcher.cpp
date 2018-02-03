@@ -139,3 +139,19 @@ uint32 SearchNode::getPathCost() const {
 
   return m_parent->getPathCost() + EPSILLON;
 }
+
+std::vector< Move > *SearchNode::getAllActions() const {
+
+  /* Recursive base case */
+  if ( m_parent == NULL ) {
+    return new std::vector< Move >();
+  }
+
+  /* Get all preceeding actions */
+  std::vector< Move > *parentMoves = m_parent->getAllActions();
+
+  /* Add this action to list */
+  parentMoves->push_back( Move( *m_action ));
+
+  return parentMoves;
+}
