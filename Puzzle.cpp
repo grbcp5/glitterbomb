@@ -195,6 +195,8 @@ void Puzzle::swap( const Point from, const Point to ) {
 }
 
 void Puzzle::makeMove( const Move &m ) {
+
+  // TODO: Full move
   ::swap( m_grid, m.from, m.to );
 }
 
