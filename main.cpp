@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "ZTest.h"
 
@@ -37,7 +38,7 @@ ExecutionType getExecutionType( const int argc, const char **argv ) {
   strcpy( firstParameter, argv[ 1 ] );
 
   /* Convert first parameter to lower case */
-  for ( int i = 0; i < strlen( firstParameter ); ++i ) {
+  for ( uint32 i = 0; i < strlen( firstParameter ); ++i ) {
     firstParameter[ i ] = ( char ) tolower( firstParameter[ i ] );
   }
 

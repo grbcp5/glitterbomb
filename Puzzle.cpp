@@ -38,10 +38,10 @@ Puzzle::Puzzle(
     m_bonus_rules( bonus_rules ) {
 
   m_grid = new uint8 *[m_grid_height];
-  for ( int r = 0; r < m_grid_height; r++ ) {
+  for ( uint32 r = 0; r < m_grid_height; r++ ) {
 
     m_grid[ r ] = new uint8[m_grid_width];
-    for ( int c = 0; c < m_grid_width; c++ ) {
+    for ( uint32 c = 0; c < m_grid_width; c++ ) {
 
       m_grid[ r ][ c ] = 0;
 
@@ -103,7 +103,7 @@ Puzzle Puzzle::operator=( const Puzzle &rhs ) {
 
 /* Destructor */
 Puzzle::~Puzzle() {
-  for ( int r = 0; r < m_grid_height; r++ ) {
+  for ( uint32 r = 0; r < m_grid_height; r++ ) {
     delete[] m_grid[ r ];
   }
   delete[] m_grid;
@@ -129,8 +129,8 @@ Puzzle *Puzzle::construct( std::istream &in ) {
       bonus_rules
   );
 
-  for ( int r = 0; r < result->m_grid_height; r++ ) {
-    for ( int c = 0; c < result->m_grid_width; c++ ) {
+  for ( uint32 r = 0; r < result->m_grid_height; r++ ) {
+    for ( uint32 c = 0; c < result->m_grid_width; c++ ) {
       in >> grid_value;
       result->m_grid[ r ][ c ] = ( uint8 ) grid_value;
     }
@@ -161,16 +161,16 @@ std::ostream &operator<<( std::ostream &out, const Puzzle &p ) {
       << "\nPool Height: " << p.m_pool_height
       << "\nPuzzle Values:" << std::endl;
 
-  for ( int r = 0; r < p.m_grid_height; r++ ) {
+  for ( uint32 r = 0; r < p.m_grid_height; r++ ) {
 
     if ( r == p.m_pool_height ) {
-      for ( int i = 0; i < ( 2 * p.m_grid_width ); ++i ) {
+      for ( uint32 i = 0; i < ( 2 * p.m_grid_width ); ++i ) {
         out << "-";
       }
       out << std::endl;
     }
 
-    for ( int c = 0; c < p.m_grid_width; c++ ) {
+    for ( uint32 c = 0; c < p.m_grid_width; c++ ) {
       out << (( int ) p.m_grid[ r ][ c ] ) << " ";
     }
     out << std::endl;
@@ -242,13 +242,13 @@ uint8 **copyGrid(
   result = new uint8 *[m_grid_height];
 
   /* For each row index */
-  for ( int r = 0; r < m_grid_height; ++r ) {
+  for ( uint32 r = 0; r < m_grid_height; ++r ) {
 
     /* Create new row of equal width */
     result[ r ] = new uint8[m_grid_width];
 
     /* For each column position in row */
-    for ( int c = 0; c < m_grid_width; ++c ) {
+    for ( uint32 c = 0; c < m_grid_width; ++c ) {
 
       /* Copy value */
       result[ r ][ c ] = m_grid[ r ][ c ];
@@ -258,7 +258,7 @@ uint8 **copyGrid(
   return result;
 }
 
-void removeMatches( uint8 **grid ) {
 
+void removeMatches( uint8 **grid ) {
 
 }

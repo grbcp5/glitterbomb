@@ -31,7 +31,7 @@ int ZTest::executeAllTests() {
   int ret_val( 0 );
 
   /* Call each test case */
-  for ( int i = 0; i < NUM_TEST_OBJECTS; i++ ) {
+  for ( uint32 i = 0; i < NUM_TEST_OBJECTS; i++ ) {
     ret_val |= testObjects[ i ]->test( 1u << i );
   }
 
