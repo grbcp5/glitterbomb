@@ -14,6 +14,7 @@
 #include "Puzzle.h"
 #include <fstream>
 
+using namespace std;
 
 /* Constructor with no grid initializer */
 Puzzle::Puzzle(
@@ -221,6 +222,17 @@ bool Puzzle::isSolved() const {
 }
 
 
+void Puzzle::removeMatches( const std::vector< Point > &v ) {
+
+  /* For each matched points */
+  for ( uint32 i = 0; i < v.size(); ++i ) {
+
+    /* Mark device with 0 */
+    m_grid[ v[ i ].row ][ v[ i ].col ] = 0;
+  }
+}
+
+
 uint8 **copyGrid(
     const uint8 **const m_grid,
     const uint32 m_grid_height,
@@ -247,14 +259,4 @@ uint8 **copyGrid(
   }
 
   return result;
-}
-
-
-void removeMatches( uint8 **grid ) {
-  
-  if( grid ) {
-    return;
-  }
-
-  return;
 }

@@ -5,8 +5,10 @@
 #ifndef GLITTERBOMB_PUZZLE_H
 #define GLITTERBOMB_PUZZLE_H
 
-#include "types.h"
 #include <iostream>
+#include <vector>
+
+#include "types.h"
 
 class Puzzle {
 
@@ -67,6 +69,8 @@ public:
 
     uint8 **getCopyOfGrid() const;
 
+    void removeMatches( const std::vector< Point > &matchedPoints );
+
     bool isSolved() const;
 
     /* Static functions */
@@ -86,7 +90,5 @@ uint8 **copyGrid(
     const uint32 m_grid_width
 );
 
-
-void removeMatches( uint8 **grid );
 
 #endif //GLITTERBOMB_PUZZLE_H

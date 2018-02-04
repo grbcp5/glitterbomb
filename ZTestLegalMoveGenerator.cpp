@@ -39,6 +39,7 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
 
   /* Local Variables */
   Puzzle *puzzle;
+  Puzzle *puzzleCopy;
   vector< Move * > *ret_val;
   Move *curMove;
 
@@ -83,6 +84,14 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
         cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
         return testID;
       }
+
+      puzzleCopy = new Puzzle( *puzzle );
+      puzzleCopy->makeMove( *curMove );
+      puzzleCopy->removeMatches( *( curMove->matchedDevices ) );
+
+      cout << ( *puzzleCopy ) << endl;
+
+      delete puzzleCopy;
 
       curMove->matchedDevices->clear();
       delete curMove;
