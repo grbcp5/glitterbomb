@@ -22,7 +22,7 @@ enum Direction {
     UP = DIR_MIN,
     DOWN = 1,
     LEFT = 2,
-    RIGHT = 3,
+    RIGHT = 3
 };
 
 struct Point {

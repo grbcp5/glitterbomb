@@ -285,7 +285,7 @@ vector< Move > *getLegalMoves( const Puzzle *p ) {
     for ( uint32 c = 0; c < ( p->m_grid_width - 1 ); c++ ) {
 
       /* For each direction to move a piece */
-      for ( int d = 0; d < DIR_COUNT; d++ ) {
+      for ( uint32 d = 0; d < DIR_COUNT; d++ ) {
 
         /* Find how many points are generated from swap */
         points = resultingPointsFromMove(
