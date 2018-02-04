@@ -188,8 +188,10 @@ void Puzzle::swap( const Point from, const Point to ) {
 
 void Puzzle::makeMove( const Move &m ) {
 
-  // TODO: Full move
   ::swap( m_grid, m.from, m.to );
+  removeMatches( *( m.matchedDevices ));
+  fillEmptyPoints();
+
 }
 
 uint8 Puzzle::getDeviceType( Point p ) const {
@@ -230,6 +232,38 @@ void Puzzle::removeMatches( const std::vector< Point > &v ) {
     /* Mark device with 0 */
     m_grid[ v[ i ].row ][ v[ i ].col ] = 0;
   }
+}
+
+
+uint8 Puzzle::getReplacement( const uint32 x, const uint32 devRepl ) {
+  return ( uint8 ) ((( getDeviceType( 1, x ) + x + devRepl ) %
+                     m_num_device_types ) + 1 );
+}
+
+void Puzzle::fallDown( const uint32 row, const uint32 col, const uint32 n ) {
+
+  for ( int r = row; r > 0; --r ) {
+    m_grid[ r ][ col ] = m_grid[ r - 1 ][ col ];
+  }
+
+  m_grid[ 0 ][ col ] = getReplacement( col, n );
+}
+
+
+void Puzzle::fillEmptyPoints() {
+
+  uint32 devRepl = 1u;
+
+  for ( uint32 r = 0; r < m_grid_height; ++r ) {
+    for ( uint32 c = 0; c < m_grid_width; ++c ) {
+
+      if ( m_grid[ r ][ c ] == 0 ) {
+        fallDown( r, c, devRepl++ );
+      }
+
+    }
+  }
+
 }
 
 

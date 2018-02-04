@@ -87,7 +87,6 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
 
       puzzleCopy = new Puzzle( *puzzle );
       puzzleCopy->makeMove( *curMove );
-      puzzleCopy->removeMatches( *( curMove->matchedDevices ) );
 
       cout << ( *puzzleCopy ) << endl;
 

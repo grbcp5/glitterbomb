@@ -15,6 +15,8 @@ class Puzzle {
 private:
     uint8 **m_grid;
 
+    void fallDown( const uint32 row, const uint32 col, const uint32 n );
+
 public:
     static const uint8 NO_DEVICE = 0;
 
@@ -69,7 +71,11 @@ public:
 
     uint8 **getCopyOfGrid() const;
 
+    uint8 getReplacement( const uint32 x, const uint32 devRepl );
+
     void removeMatches( const std::vector< Point > &matchedPoints );
+
+    void fillEmptyPoints();
 
     bool isSolved() const;
 
