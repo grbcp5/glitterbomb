@@ -39,6 +39,10 @@ struct Point {
     Point( const Point &cpy )
         : row( cpy.row ),
           col( cpy.col ) {}
+
+    bool operator==( const Point &rhs ) {
+      return row == rhs.row && col == rhs.col;
+    }
 };
 
 struct Move {

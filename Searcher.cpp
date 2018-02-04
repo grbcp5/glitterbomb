@@ -104,6 +104,7 @@ Puzzle *SearchNode::getState() const {
 
   /* Local variables */
   Puzzle *state = NULL;
+  Move *action;
 
   /* Recursive base case */
   if ( m_parent == NULL ) {
@@ -113,10 +114,12 @@ Puzzle *SearchNode::getState() const {
   /* Get result after all parent manipulations */
   state = m_parent->getState();
 
+  action = new Move( *m_action );
   /* Make manipulation */
   if ( m_action != NULL ) {
-    state->makeMove( *m_action );
+    state->makeMove( *action );
   }
+  delete action;
 
   return state;
 }

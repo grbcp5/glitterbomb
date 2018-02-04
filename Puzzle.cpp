@@ -186,12 +186,49 @@ void Puzzle::swap( const Point from, const Point to ) {
   ::swap( m_grid, from, to );
 }
 
-void Puzzle::makeMove( const Move &m ) {
+uint32 Puzzle::makeMove( Move &m ) {
 
+  /* Local variables */
+  std::vector< Point > *matches;
+  uint32 scoreFromMove( 0 );
+
+  /* Initialize */
+  matches = m.matchedDevices;
+  m.matchedDevices = NULL;
+
+  /* Make swap */
   ::swap( m_grid, m.from, m.to );
-  removeMatches( *( m.matchedDevices ));
-  fillEmptyPoints();
 
+  /* While there are matched points */
+  while ( matches != NULL && !matches->empty()) {
+
+    /* Increment score */
+    scoreFromMove += matches->size();
+
+    /* Remove them */
+    removeMatches( *( matches ));
+
+    /* Fall down */
+    fillEmptyPoints();
+
+    if ( m.from.row == 5 && m.from.col == 6 && m.to.col == 6 ) {
+      cout << "\t~~~~~ Matches: " << matches->size() << endl;
+      cout << ( *this ) << endl;
+    }
+
+    /* Delete dynamic memeory */
+    matches->clear();
+    delete matches;
+
+    /* Get subsequent matches */
+    matches = findAllExistingMatches();
+  }
+
+  /* Update puzzle variables */
+  m_score += scoreFromMove;
+  m_swaps_used++;
+
+  return scoreFromMove;
 }
 
 uint8 Puzzle::getDeviceType( Point p ) const {
@@ -266,6 +303,50 @@ void Puzzle::fillEmptyPoints() {
 
 }
 
+std::vector< Point > *Puzzle::findAllExistingMatches() const {
+
+  const Direction DIRS[] = { RIGHT, DOWN };
+  const uint32 NUM_DIRS = 2;
+
+  std::vector< Point > *result = new std::vector< Point >();
+  Point here;
+  uint8 hereD;
+  Point next;
+  uint8 nextD;
+  Point last;
+  uint8 lastD;
+
+  for ( uint32 r = 0; r < m_grid_height; ++r ) {
+    for ( uint32 c = 0; c < m_grid_width; ++c ) {
+      for ( uint32 d = 0; d < NUM_DIRS; ++d ) {
+
+        if ( r > m_grid_width - 3 && DIRS[ d ] == RIGHT ) {
+          continue;
+        }
+
+        if ( c > m_grid_height - 3 && DIRS[ d ] == DOWN ) {
+          continue;
+        }
+
+        here = Point( r, c );
+        hereD = getDeviceType( here );
+        next = formulatePoint( r, c, DIRS[ d ] );
+        nextD = getDeviceType( next );
+        last = formulatePoint( next.row, next.col, DIRS[ d ] );
+        lastD = getDeviceType( last );
+
+        if ( hereD != 0 && hereD == nextD && nextD == lastD ) {
+          addIfNew( result, here );
+          addIfNew( result, next );
+          addIfNew( result, last );
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
 
 uint8 **copyGrid(
     const uint8 **const m_grid,
@@ -293,4 +374,35 @@ uint8 **copyGrid(
   }
 
   return result;
+}
+
+Point formulatePoint( const uint32 r, const uint32 c, const Direction d ) {
+
+  switch ( d ) {
+    case UP:
+      return Point( r - 1, c );
+    case DOWN:
+      return Point( r + 1, c );
+    case LEFT:
+      return Point( r, c - 1 );
+    case RIGHT:
+      return Point( r, c + 1 );
+  }
+
+  return Point( r, c );
+}
+
+void addIfNew( std::vector< Point > *v, Point newPoint ) {
+
+  if ( v == NULL ) {
+    return;
+  }
+
+  for ( uint32 i = 0; i < v->size(); ++i ) {
+    if ( v->at( i ) == newPoint ) {
+      return;
+    }
+  }
+
+  v->push_back( newPoint );
 }

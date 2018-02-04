@@ -63,7 +63,7 @@ public:
     /* Member functions */
     void swap( const Point from, const Point to );
 
-    void makeMove( const Move &m );
+    uint32 makeMove( Move &m );
 
     uint8 getDeviceType( Point p ) const;
 
@@ -76,6 +76,8 @@ public:
     void removeMatches( const std::vector< Point > &matchedPoints );
 
     void fillEmptyPoints();
+
+    std::vector< Point > *findAllExistingMatches() const;
 
     bool isSolved() const;
 
@@ -96,5 +98,8 @@ uint8 **copyGrid(
     const uint32 m_grid_width
 );
 
+Point formulatePoint( const uint32 r, const uint32 c, const Direction d );
+
+void addIfNew( std::vector< Point > *v, Point newPoint );
 
 #endif //GLITTERBOMB_PUZZLE_H

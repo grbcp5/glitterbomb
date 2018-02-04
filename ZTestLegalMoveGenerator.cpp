@@ -42,6 +42,7 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
   Puzzle *puzzleCopy;
   vector< Move * > *ret_val;
   Move *curMove;
+  uint32 moveScore;
 
   /* Execute each test case */
   for ( const test_case_t *cur_test = test_cases;
@@ -72,27 +73,19 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
            << "(r:" << curMove->to.row << ",c:" << curMove->to.col << ") "
            << "devices matched: " << curMove->resultingMatches << ": " << endl;
 
-      if ( curMove->matchedDevices != NULL ) {
-        for ( uint32 d = 0; d < curMove->matchedDevices->size(); ++d ) {
-          cout << "\t"
-               << "(r:" << curMove->matchedDevices->at( d ).row << ",c:"
-               << curMove->matchedDevices->at( d ).col << ")" << endl;
-        }
-      }
-
-      if ( curMove->resultingMatches > curMove->matchedDevices->size()) {
+      if ( curMove->resultingMatches != curMove->matchedDevices->size()) {
         cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
         return testID;
       }
 
       puzzleCopy = new Puzzle( *puzzle );
-      puzzleCopy->makeMove( *curMove );
+      moveScore = puzzleCopy->makeMove( *curMove );
 
+      cout << "Score: " << moveScore << endl;
       cout << ( *puzzleCopy ) << endl;
 
       delete puzzleCopy;
 
-      curMove->matchedDevices->clear();
       delete curMove;
     }
 

@@ -15,24 +15,6 @@
 
 using namespace std;
 
-
-Point formulatePoint( const uint32 r, const uint32 c, const Direction d ) {
-
-  switch ( d ) {
-    case UP:
-      return Point( r - 1, c );
-    case DOWN:
-      return Point( r + 1, c );
-    case LEFT:
-      return Point( r, c - 1 );
-    case RIGHT:
-      return Point( r, c + 1 );
-  }
-
-  return Point( r, c );
-}
-
-
 uint32 checkHorizontalRange(
     const Puzzle &p,
     const uint32 row,
@@ -168,7 +150,7 @@ uint32 checkForMatchesRightSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchOne; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   totalDevicesMatched += potentialMatchOne;
@@ -183,7 +165,7 @@ uint32 checkForMatchesRightSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchTwo; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   totalDevicesMatched += potentialMatchTwo;
@@ -198,7 +180,7 @@ uint32 checkForMatchesRightSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchThree; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   potentialMatchThree -= ( potentialMatchOne ? 1 : 0 );
@@ -214,13 +196,13 @@ uint32 checkForMatchesRightSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchFour; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   potentialMatchFour -= ( potentialMatchTwo ? 1 : 0 );
   totalDevicesMatched += ( potentialMatchFour < 6 ? potentialMatchFour : 0 );
 
-  delete [] matchedDevices;
+  delete[] matchedDevices;
 
   return totalDevicesMatched;
 }
@@ -252,7 +234,7 @@ uint32 checkForMatchesDownSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchOne; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   totalDevicesMatched += potentialMatchOne;
@@ -267,7 +249,7 @@ uint32 checkForMatchesDownSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchTwo; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   totalDevicesMatched += potentialMatchTwo;
@@ -282,7 +264,7 @@ uint32 checkForMatchesDownSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchThree; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   potentialMatchThree -= ( potentialMatchOne ? 1 : 0 );
@@ -298,13 +280,13 @@ uint32 checkForMatchesDownSwap(
   );
   /* Add matched device position to vector */
   for ( uint32 i = 0; i < potentialMatchFour; ++i ) {
-    totalMatchPoints->push_back( matchedDevices[ i ] );
+    addIfNew( totalMatchPoints, matchedDevices[ i ] );
   }
   /* Keep running total */
   potentialMatchFour -= ( potentialMatchTwo ? 1 : 0 );
   totalDevicesMatched += ( potentialMatchFour < 6 ? potentialMatchFour : 0 );
 
-  delete [] matchedDevices;
+  delete[] matchedDevices;
 
   return totalDevicesMatched;
 }
