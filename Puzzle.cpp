@@ -257,3 +257,8 @@ uint8 **copyGrid(
 
   return result;
 }
+
+void removeMatches( uint8 **grid ) {
+
+
+}

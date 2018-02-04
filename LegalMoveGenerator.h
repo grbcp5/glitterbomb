@@ -8,6 +8,6 @@
 #include <vector>
 #include "Puzzle.h"
 
-std::vector< Move > *getLegalMoves( const Puzzle *p );
+std::vector< Move * > *getLegalMoves( const Puzzle *p );
 
 #endif // GLITTERBOMB_LEGALMOVEGENERATOR_H

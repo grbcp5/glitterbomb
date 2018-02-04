@@ -14,6 +14,8 @@
 #ifndef GLITTERBOMB_TYPES_H
 #define GLITTERBOMB_TYPES_H
 
+#include <vector>
+
 typedef unsigned int uint32;
 typedef unsigned char uint8;
 
@@ -39,16 +41,28 @@ struct Point {
 };
 
 struct Move {
-    Point from;
-    Point to;
-    uint32 resultingMatches;
-
-    Move() : from(), to(), resultingMatches( 0 ) {}
+    const Point from;
+    const Point to;
+    const uint32 resultingMatches;
+    std::vector< Point > *const matchedDevices;
 
     Move( Point f, Point t, uint32 points ) :
         from( f ),
         to( t ),
-        resultingMatches( points ) {}
+        resultingMatches( points ),
+        matchedDevices( new std::vector< Point >()) {}
+
+    Move( Point f, Point t, uint32 points, std::vector< Point > *locations ) :
+        from( f ),
+        to( t ),
+        resultingMatches( points ),
+        matchedDevices( locations ) {}
+
+    ~Move() {
+      if ( matchedDevices != NULL ) {
+        delete matchedDevices;
+      }
+    }
 };
 
 #endif //GLITTERBOMB_TYPES_H

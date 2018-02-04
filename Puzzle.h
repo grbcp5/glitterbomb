@@ -89,4 +89,7 @@ uint8 **copyGrid(
     const uint32 m_grid_width
 );
 
+
+void removeMatches( uint8 **grid );
+
 #endif //GLITTERBOMB_PUZZLE_H
