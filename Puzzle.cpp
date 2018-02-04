@@ -211,11 +211,6 @@ uint32 Puzzle::makeMove( Move &m ) {
     /* Fall down */
     fillEmptyPoints();
 
-    if ( m.from.row == 5 && m.from.col == 6 && m.to.col == 6 ) {
-      cout << "\t~~~~~ Matches: " << matches->size() << endl;
-      cout << ( *this ) << endl;
-    }
-
     /* Delete dynamic memeory */
     matches->clear();
     delete matches;
@@ -223,6 +218,8 @@ uint32 Puzzle::makeMove( Move &m ) {
     /* Get subsequent matches */
     matches = findAllExistingMatches();
   }
+
+  delete matches;
 
   /* Update puzzle variables */
   m_score += scoreFromMove;
