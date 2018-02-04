@@ -91,15 +91,6 @@ Puzzle::Puzzle( const Puzzle &cpy ) :
   m_grid = cpy.getCopyOfGrid();
 }
 
-Puzzle Puzzle::operator=( const Puzzle &rhs ) {
-
-  uint32 a( 0 );
-
-  /* Intentionally cause error */
-  m_swaps_used = 5u / a;
-
-  return *this;
-}
 
 /* Destructor */
 Puzzle::~Puzzle() {
@@ -260,5 +251,10 @@ uint8 **copyGrid(
 
 
 void removeMatches( uint8 **grid ) {
+  
+  if( grid ) {
+    return;
+  }
 
+  return;
 }

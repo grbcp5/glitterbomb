@@ -53,9 +53,6 @@ public:
     /* Deep copy constructor */
     Puzzle( const Puzzle &cpy );
 
-    /* Operator = */
-    Puzzle operator=( const Puzzle &rhs );
-
     /* Safe destructor */
     ~Puzzle();
 

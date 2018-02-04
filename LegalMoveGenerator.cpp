@@ -168,7 +168,7 @@ uint32 checkForMatchesRightSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchOne; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchOne; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
@@ -183,7 +183,7 @@ uint32 checkForMatchesRightSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchTwo; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchTwo; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
@@ -198,7 +198,7 @@ uint32 checkForMatchesRightSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchThree; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchThree; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
@@ -214,7 +214,7 @@ uint32 checkForMatchesRightSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchFour; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchFour; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
@@ -262,7 +262,7 @@ uint32 checkForMatchesDownSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchOne; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchOne; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
@@ -277,7 +277,7 @@ uint32 checkForMatchesDownSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchTwo; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchTwo; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
@@ -292,7 +292,7 @@ uint32 checkForMatchesDownSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchThree; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchThree; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
@@ -308,7 +308,7 @@ uint32 checkForMatchesDownSwap(
       matchedDevices
   );
   /* Add matched device position to vector */
-  for ( int i = 0; i < potentialMatchFour; ++i ) {
+  for ( uint32 i = 0; i < potentialMatchFour; ++i ) {
     totalMatchPoints->push_back( matchedDevices[ i ] );
   }
   /* Keep running total */
