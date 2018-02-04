@@ -84,6 +84,7 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
         return testID;
       }
 
+      curMove->matchedDevices->clear();
       delete curMove;
     }
 

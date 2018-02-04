@@ -34,7 +34,7 @@ ExecutionType getExecutionType( const int argc, const char **argv ) {
   }
 
   /* Initialize */
-  firstParameter = new char[strlen( argv[ 1 ] )];
+  firstParameter = new char[strlen( argv[ 1 ] ) + 1 ];
   strcpy( firstParameter, argv[ 1 ] );
 
   /* Convert first parameter to lower case */
@@ -44,9 +44,12 @@ ExecutionType getExecutionType( const int argc, const char **argv ) {
 
   /* Check for test parameter */
   if ( strcmp( firstParameter, "test" ) == 0 ) {
+    delete [] firstParameter;
     return TEST;
   }
 
+  delete firstParameter;
+  
   /* Default to RUN */
   return RUN;
 }

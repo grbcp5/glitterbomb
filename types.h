@@ -57,10 +57,17 @@ struct Move {
         from( f ),
         to( t ),
         resultingMatches( points ),
-        matchedDevices( locations ) {}
+        matchedDevices( new std::vector< Point >() ) {
+        
+          for( uint32 i = 0; i < locations->size(); i++ ) {
+            matchedDevices->push_back( locations->at( i ));
+          }
+
+        }
 
     ~Move() {
       if ( matchedDevices != NULL ) {
+        matchedDevices->clear();
         delete matchedDevices;
       }
     }

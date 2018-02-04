@@ -33,6 +33,8 @@ int ZTest::executeAllTests() {
   /* Call each test case */
   for ( uint32 i = 0; i < NUM_TEST_OBJECTS; i++ ) {
     ret_val |= testObjects[ i ]->test( 1u << i );
+
+    delete testObjects[ i ];
   }
 
   /* return results */

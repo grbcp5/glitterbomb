@@ -145,7 +145,7 @@ uint32 checkVerticalRange(
 uint32 checkForMatchesRightSwap(
     const Puzzle &p,
     Point from,
-    vector< Point > *&matchedLocations
+    vector< Point > *totalMatchPoints
 ) {
 
   /* Local Variables */
@@ -155,7 +155,6 @@ uint32 checkForMatchesRightSwap(
   uint32 potentialMatchThree( 0 );
   uint32 potentialMatchFour( 0 );
   Point *matchedDevices = new Point[5]; // 5 = max range
-  vector< Point > *totalMatchPoints = new vector< Point >();
 
   /* Reference diagram under resources/SwapDiagrams.pdf */
 
@@ -221,25 +220,16 @@ uint32 checkForMatchesRightSwap(
   potentialMatchFour -= ( potentialMatchTwo ? 1 : 0 );
   totalDevicesMatched += ( potentialMatchFour < 6 ? potentialMatchFour : 0 );
 
-  matchedLocations = totalMatchPoints;
+  delete [] matchedDevices;
+
   return totalDevicesMatched;
 }
 
 
-uint32 checkForMatchesRightSwap(
-    const Puzzle &p,
-    Point from
-) {
-  vector< Point > *v = NULL;
-  uint32 result = checkForMatchesRightSwap( p, from, v );
-  delete v;
-  return result;
-}
-
 uint32 checkForMatchesDownSwap(
     const Puzzle &p,
     Point from,
-    vector< Point > *&matchedLocations
+    vector< Point > *totalMatchPoints
 ) {
 
   /* Local Variables */
@@ -249,7 +239,6 @@ uint32 checkForMatchesDownSwap(
   uint32 potentialMatchThree( 0 );
   uint32 potentialMatchFour( 0 );
   Point *matchedDevices = new Point[5]; // 5 = max range
-  vector< Point > *totalMatchPoints = new vector< Point >();
 
   /* Reference diagram under resources/SwapDiagrams.pdf */
 
@@ -315,19 +304,9 @@ uint32 checkForMatchesDownSwap(
   potentialMatchFour -= ( potentialMatchTwo ? 1 : 0 );
   totalDevicesMatched += ( potentialMatchFour < 6 ? potentialMatchFour : 0 );
 
-  matchedLocations = totalMatchPoints;
+  delete [] matchedDevices;
+
   return totalDevicesMatched;
-}
-
-
-uint32 checkForMatchesDownSwap(
-    const Puzzle &p,
-    Point from
-) {
-  vector< Point > *v = NULL;
-  uint32 result = checkForMatchesDownSwap( p, from, v );
-  delete v;
-  return result;
 }
 
 
@@ -335,14 +314,13 @@ uint32 resultingPointsFromMove(
     const Puzzle *puzzle,
     Point from,
     Direction dir,
-    vector< Point > *&matchedLocations
+    vector< Point > *matchedPoints
 ) {
 
   /* Local Variables */
   Puzzle puzzleCopy( *puzzle );
   uint32 totalPoints( 0 );
   Point to;
-  vector< Point > *matchedPoints = NULL;
 
   /* Initialize */
   to = formulatePoint( from.row, from.col, dir );
@@ -383,20 +361,7 @@ uint32 resultingPointsFromMove(
   }
 
   /* Return sum of all matches */
-  matchedLocations = matchedPoints;
   return totalPoints;
-}
-
-
-uint32 resultingPointsFromMove(
-    const Puzzle *puzzle,
-    Point from,
-    Direction dir
-) {
-  vector< Point > *v;
-  uint32 ret_val = resultingPointsFromMove( puzzle, from, dir, v );
-  delete v;
-  return ret_val;
 }
 
 
@@ -405,11 +370,12 @@ vector< Move * > *getLegalMoves( const Puzzle *p ) {
   /* Local Constants */
   const Direction DIRS[] = { RIGHT, DOWN };
   const uint32 DIR_COUNT = 2;
-  vector< Point > *matched;
+
 
   /* Local Variables */
   vector< Move * > *result = new vector< Move * >();
   uint32 points( 0 );
+  vector< Point > *matched = new vector< Point >();
 
   /* For each row in grid */
   for ( uint32 r = p->m_pool_height; r < p->m_grid_height; r++ ) {
@@ -429,6 +395,8 @@ vector< Move * > *getLegalMoves( const Puzzle *p ) {
         if ( c == p->m_grid_width - 1 && DIRS[ d ] == RIGHT ) {
           continue;
         }
+
+        matched->clear();
 
         /* Find how many points are generated from swap */
         points = resultingPointsFromMove(
@@ -454,6 +422,9 @@ vector< Move * > *getLegalMoves( const Puzzle *p ) {
       }  // d
     } // c
   } // r
+
+  matched->clear();
+  delete matched;
 
   // Return list of legal moves
   return result;

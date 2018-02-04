@@ -17,6 +17,7 @@ public:
     static int executeAllTests();
 
     virtual int test( uint32 testID ) const = 0;
+    virtual ~ZTest() {}
 };
 
 
