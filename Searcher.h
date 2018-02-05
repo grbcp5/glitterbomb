@@ -17,7 +17,7 @@ struct PuzzleSolution {
     bool solutionExists;
     const Puzzle *initialState;
     uint32 numMovesToSolution;
-    const Move *moves;
+    Move *moves;
 
     /* Default Constructor */
     PuzzleSolution();
@@ -34,6 +34,7 @@ private:
     const Move *m_action;
 
 public:
+    std::vector< const SearchNode * > m_children;
 
     SearchNode();
 

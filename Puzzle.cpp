@@ -146,7 +146,9 @@ Puzzle *Puzzle::construct( const char *fileName ) {
 
 std::ostream &operator<<( std::ostream &out, const Puzzle &p ) {
 
-  out << "Quota: " << p.m_quota
+  out << "Score: " << p.m_score
+      << "\nSwaps: " << p.m_swaps_used
+      << "\nQuota: " << p.m_quota
       << "\nAllowed Swaps: " << p.m_num_swaps
       << "\nNum Device Types: " << p.m_num_device_types
       << "\nGrid (WxH): (" << p.m_grid_width << "x" << p.m_grid_height << ")"
@@ -186,7 +188,7 @@ void Puzzle::swap( const Point from, const Point to ) {
   ::swap( m_grid, from, to );
 }
 
-uint32 Puzzle::makeMove( Move &m ) {
+uint32 Puzzle::makeMove( Move &m, const bool showWork ) {
 
   /* Local variables */
   std::vector< Point > *matches;
@@ -199,6 +201,10 @@ uint32 Puzzle::makeMove( Move &m ) {
   /* Make swap */
   ::swap( m_grid, m.from, m.to );
 
+  if ( showWork ) {
+    cout << "\tWork: " << scoreFromMove << endl << ( *this ) << endl;
+  }
+
   /* While there are matched points */
   while ( matches != NULL && !matches->empty()) {
 
@@ -208,8 +214,16 @@ uint32 Puzzle::makeMove( Move &m ) {
     /* Remove them */
     removeMatches( *( matches ));
 
+    if ( showWork ) {
+      cout << "\tWork: " << scoreFromMove << endl << ( *this ) << endl;
+    }
+
     /* Fall down */
     fillEmptyPoints();
+
+    if ( showWork ) {
+      cout << "\tWork: " << scoreFromMove << endl << ( *this ) << endl;
+    }
 
     /* Delete dynamic memeory */
     matches->clear();
@@ -254,7 +268,7 @@ uint8 **Puzzle::getCopyOfGrid() const {
 }
 
 bool Puzzle::isSolved() const {
-  return !m_quota;
+  return m_score >= m_quota;
 }
 
 
@@ -313,15 +327,15 @@ std::vector< Point > *Puzzle::findAllExistingMatches() const {
   Point last;
   uint8 lastD;
 
-  for ( uint32 r = 0; r < m_grid_height; ++r ) {
+  for ( uint32 r = m_pool_height; r < m_grid_height; ++r ) {
     for ( uint32 c = 0; c < m_grid_width; ++c ) {
       for ( uint32 d = 0; d < NUM_DIRS; ++d ) {
 
-        if ( r > m_grid_width - 3 && DIRS[ d ] == RIGHT ) {
+        if ( c > m_grid_width - 3 && DIRS[ d ] == RIGHT ) {
           continue;
         }
 
-        if ( c > m_grid_height - 3 && DIRS[ d ] == DOWN ) {
+        if ( r > m_grid_height - 3 && DIRS[ d ] == DOWN ) {
           continue;
         }
 
@@ -342,6 +356,24 @@ std::vector< Point > *Puzzle::findAllExistingMatches() const {
   }
 
   return result;
+}
+
+void Puzzle::printFile() const {
+
+  std::cout << m_quota << endl
+            << m_num_swaps << endl
+            << m_num_device_types << endl
+            << m_grid_width << endl
+            << m_grid_height << endl
+            << m_pool_height << endl;
+
+  for ( uint32 r = 0; r < m_grid_height; r++ ) {
+    for ( uint32 c = 0; c < m_grid_width; c++ ) {
+      cout << (( int ) m_grid[ r ][ c ] ) << " ";
+    }
+    cout << std::endl;
+  }
+
 }
 
 

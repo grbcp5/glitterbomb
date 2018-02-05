@@ -14,6 +14,7 @@
 #ifndef GLITTERBOMB_TYPES_H
 #define GLITTERBOMB_TYPES_H
 
+#include <iostream>
 #include <vector>
 #include <cstddef>
 
@@ -43,13 +44,25 @@ struct Point {
     bool operator==( const Point &rhs ) {
       return row == rhs.row && col == rhs.col;
     }
+
 };
+
+inline std::ostream &operator<<( std::ostream &o, const Point &p ) {
+  o << "(" << p.col << "," << p.row << ")";
+  return o;
+}
 
 struct Move {
     Point from;
     Point to;
     uint32 resultingMatches;
     std::vector< Point > *matchedDevices;
+
+    Move() :
+        from(),
+        to(),
+        resultingMatches( 0 ),
+        matchedDevices( new std::vector< Point >()) {}
 
     Move( Point f, Point t, uint32 points ) :
         from( f ),
@@ -69,6 +82,20 @@ struct Move {
 
         }
 
+    Move( const Move &cpy ) :
+        from( cpy.from ),
+        to( cpy.to ),
+        resultingMatches( cpy.resultingMatches ),
+        matchedDevices( new std::vector< Point >()) {
+
+      if ( cpy.matchedDevices != NULL ) {
+        for ( uint32 i = 0; i < cpy.matchedDevices->size(); ++i ) {
+          matchedDevices->push_back( cpy.matchedDevices->at( i ));
+        }
+      }
+
+    }
+
     ~Move() {
       if ( matchedDevices != NULL ) {
         matchedDevices->clear();
@@ -76,5 +103,11 @@ struct Move {
       }
     }
 };
+
+inline std::ostream &operator<<( std::ostream &o, const Move &m ) {
+  o << m.from << "," << m.to;
+
+  return o;
+}
 
 #endif //GLITTERBOMB_TYPES_H

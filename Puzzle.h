@@ -61,9 +61,11 @@ public:
     ~Puzzle();
 
     /* Member functions */
+    void printFile() const;
+
     void swap( const Point from, const Point to );
 
-    uint32 makeMove( Move &m );
+    uint32 makeMove( Move &m, const bool showWork = false );
 
     uint8 getDeviceType( Point p ) const;
 

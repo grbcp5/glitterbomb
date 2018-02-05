@@ -353,11 +353,15 @@ vector< Move * > *getLegalMoves( const Puzzle *p ) {
   const Direction DIRS[] = { RIGHT, DOWN };
   const uint32 DIR_COUNT = 2;
 
-
   /* Local Variables */
   vector< Move * > *result = new vector< Move * >();
   uint32 points( 0 );
   vector< Point > *matched = new vector< Point >();
+
+  /* Return if no swaps available */
+  if ( p->m_swaps_used >= p->m_num_swaps ) {
+    return result;
+  }
 
   /* For each row in grid */
   for ( uint32 r = p->m_pool_height; r < p->m_grid_height; r++ ) {

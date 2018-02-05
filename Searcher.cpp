@@ -34,23 +34,27 @@ PuzzleSolution::~PuzzleSolution() {
 SearchNode::SearchNode()
     : m_initialState( NULL ),
       m_parent( NULL ),
-      m_action( NULL ) {}
+      m_action( NULL ),
+      m_children() {}
 
 
 SearchNode::SearchNode( const Puzzle *initialState )
     : m_initialState( NULL ),
       m_parent( NULL ),
-      m_action( NULL ) {
+      m_action( NULL ),
+      m_children() {
 
-  m_initialState = new Puzzle( *( initialState ));
+  initialState == NULL ? NULL :
+      m_initialState = new Puzzle( *( initialState ));
 }
 
 
 SearchNode::SearchNode( const SearchNode *parent, const Move *action )
-    : m_initialState( NULL ) {
+    : m_initialState( NULL ),
+      m_children() {
 
-  m_parent = new SearchNode( *( parent ));
-  m_action = new Move( *( action ));
+  m_parent = parent;
+  m_action = action == NULL ? NULL : new Move( *( action ));
 
 }
 
@@ -60,19 +64,24 @@ SearchNode::SearchNode(
     const SearchNode *parent,
     const Move *action ) {
 
-  m_initialState = new Puzzle( *( initialState ));
-  m_parent = new SearchNode( *( parent ));
-  m_action = new Move( *( action ));
+
+  m_initialState = initialState;
+  m_parent = parent;
+  m_action = action == NULL ? NULL : new Move( *( action ));
 
 }
 
 
 SearchNode::SearchNode( const SearchNode &cpy ) {
 
-  m_initialState = new Puzzle( *( cpy.m_initialState ));
-  m_parent = new SearchNode( *( cpy.m_parent ));
-  m_action = new Move( *( cpy.m_action ));
+  cpy.m_initialState == NULL ? NULL :
+      m_initialState = new Puzzle( *( cpy.m_initialState ));
+  m_parent = cpy.m_parent;
+  m_action = cpy.m_action == NULL ? NULL : new Move( *( cpy.m_action ));
 
+  for ( int i = 0; i < cpy.m_children.size(); ++i ) {
+    m_children.push_back( cpy.m_children[ i ] );
+  }
 }
 
 
@@ -88,12 +97,18 @@ SearchNode SearchNode::operator=( const SearchNode &rhs ) {
   delete m_action;
   m_action = new Move( *( rhs.m_action ));
 
+  m_children.clear();
+  for ( int i = 0; i < rhs.m_children.size(); ++i ) {
+    m_children.push_back( rhs.m_children[ i ] );
+  }
+
   return *this;
 }
 
 
 SearchNode::~SearchNode() {
 
+  delete m_initialState;
   delete m_parent;
   delete m_action;
 
@@ -107,7 +122,7 @@ Puzzle *SearchNode::getState() const {
   Move *action;
 
   /* Recursive base case */
-  if ( m_parent == NULL ) {
+  if ( m_initialState != NULL || m_parent == NULL ) {
     return new Puzzle( *( m_initialState ));
   }
 
