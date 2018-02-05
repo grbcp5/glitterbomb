@@ -14,7 +14,6 @@
 #include "ZTestLegalMoveGenerator.h"
 
 #include <iostream>
-#include <vector>
 
 #include "Puzzle.h"
 #include "LegalMoveGenerator.h"
@@ -40,8 +39,10 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
 
   /* Local Variables */
   Puzzle *puzzle;
-  vector< Move > *ret_val;
-  Move curMove;
+  Puzzle *puzzleCopy;
+  vector< Move * > *ret_val;
+  Move *curMove;
+  uint32 moveScore;
 
   /* Execute each test case */
   for ( const test_case_t *cur_test = test_cases;
@@ -68,9 +69,24 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
       curMove = ret_val->at( i );
 
       cout << i << ": "
-           << "(r:" << curMove.from.row << ",c:" << curMove.from.col << ") "
-           << "(r:" << curMove.to.row << ",c:" << curMove.to.col << ") "
-           << "devices matched: " << curMove.resultingMatches << endl;
+           << "(r:" << curMove->from.row << ",c:" << curMove->from.col << ") "
+           << "(r:" << curMove->to.row << ",c:" << curMove->to.col << ") "
+           << "devices matched: " << curMove->resultingMatches << ": " << endl;
+
+      if ( curMove->resultingMatches != curMove->matchedDevices->size()) {
+        cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+        return testID;
+      }
+
+      puzzleCopy = new Puzzle( *puzzle );
+      moveScore = puzzleCopy->makeMove( *curMove );
+
+      cout << "Score: " << moveScore << endl;
+      cout << ( *puzzleCopy ) << endl;
+
+      delete puzzleCopy;
+
+      delete curMove;
     }
 
     /* Delete dynamic memory */

@@ -5,13 +5,17 @@
 #ifndef GLITTERBOMB_PUZZLE_H
 #define GLITTERBOMB_PUZZLE_H
 
-#include "types.h"
 #include <iostream>
+#include <vector>
+
+#include "types.h"
 
 class Puzzle {
 
 private:
     uint8 **m_grid;
+
+    void fallDown( const uint32 row, const uint32 col, const uint32 n );
 
 public:
     static const uint8 NO_DEVICE = 0;
@@ -57,13 +61,25 @@ public:
     ~Puzzle();
 
     /* Member functions */
-    void swap( Point from, Point to );
+    void printFile() const;
+
+    void swap( const Point from, const Point to );
+
+    uint32 makeMove( Move &m, const bool showWork = false );
 
     uint8 getDeviceType( Point p ) const;
 
     uint8 getDeviceType( uint32 r, uint32 c ) const;
 
     uint8 **getCopyOfGrid() const;
+
+    uint8 getReplacement( const uint32 x, const uint32 devRepl );
+
+    void removeMatches( const std::vector< Point > &matchedPoints );
+
+    void fillEmptyPoints();
+
+    std::vector< Point > *findAllExistingMatches() const;
 
     bool isSolved() const;
 
@@ -83,5 +99,9 @@ uint8 **copyGrid(
     const uint32 m_grid_height,
     const uint32 m_grid_width
 );
+
+Point formulatePoint( const uint32 r, const uint32 c, const Direction d );
+
+void addIfNew( std::vector< Point > *v, Point newPoint );
 
 #endif //GLITTERBOMB_PUZZLE_H

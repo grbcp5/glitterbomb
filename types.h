@@ -14,6 +14,10 @@
 #ifndef GLITTERBOMB_TYPES_H
 #define GLITTERBOMB_TYPES_H
 
+#include <iostream>
+#include <vector>
+#include <cstddef>
+
 typedef unsigned int uint32;
 typedef unsigned char uint8;
 
@@ -36,19 +40,74 @@ struct Point {
     Point( const Point &cpy )
         : row( cpy.row ),
           col( cpy.col ) {}
+
+    bool operator==( const Point &rhs ) {
+      return row == rhs.row && col == rhs.col;
+    }
+
 };
+
+inline std::ostream &operator<<( std::ostream &o, const Point &p ) {
+  o << "(" << p.col << "," << p.row << ")";
+  return o;
+}
 
 struct Move {
     Point from;
     Point to;
     uint32 resultingMatches;
+    std::vector< Point > *matchedDevices;
 
-    Move() : from(), to(), resultingMatches( 0 ) {}
+    Move() :
+        from(),
+        to(),
+        resultingMatches( 0 ),
+        matchedDevices( new std::vector< Point >()) {}
 
     Move( Point f, Point t, uint32 points ) :
         from( f ),
         to( t ),
-        resultingMatches( points ) {}
+        resultingMatches( points ),
+        matchedDevices( new std::vector< Point >()) {}
+
+    Move( Point f, Point t, uint32 points, std::vector< Point > *locations ) :
+        from( f ),
+        to( t ),
+        resultingMatches( points ),
+        matchedDevices( new std::vector< Point >() ) {
+        
+          for( uint32 i = 0; i < locations->size(); i++ ) {
+            matchedDevices->push_back( locations->at( i ));
+          }
+
+        }
+
+    Move( const Move &cpy ) :
+        from( cpy.from ),
+        to( cpy.to ),
+        resultingMatches( cpy.resultingMatches ),
+        matchedDevices( new std::vector< Point >()) {
+
+      if ( cpy.matchedDevices != NULL ) {
+        for ( uint32 i = 0; i < cpy.matchedDevices->size(); ++i ) {
+          matchedDevices->push_back( cpy.matchedDevices->at( i ));
+        }
+      }
+
+    }
+
+    ~Move() {
+      if ( matchedDevices != NULL ) {
+        matchedDevices->clear();
+        delete matchedDevices;
+      }
+    }
 };
+
+inline std::ostream &operator<<( std::ostream &o, const Move &m ) {
+  o << m.from << "," << m.to;
+
+  return o;
+}
 
 #endif //GLITTERBOMB_TYPES_H

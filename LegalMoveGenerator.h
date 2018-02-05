@@ -8,6 +8,13 @@
 #include <vector>
 #include "Puzzle.h"
 
-std::vector< Move > *getLegalMoves( const Puzzle *p );
+uint32 resultingPointsFromMove(
+    const Puzzle *puzzle,
+    Point from,
+    Direction dir,
+    std::vector< Point > *matchedPoints
+);
+
+std::vector< Move * > *getLegalMoves( const Puzzle *p );
 
 #endif // GLITTERBOMB_LEGALMOVEGENERATOR_H
