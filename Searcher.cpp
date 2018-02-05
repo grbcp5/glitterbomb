@@ -79,7 +79,7 @@ SearchNode::SearchNode( const SearchNode &cpy ) {
   m_parent = cpy.m_parent;
   m_action = cpy.m_action == NULL ? NULL : new Move( *( cpy.m_action ));
 
-  for ( int i = 0; i < cpy.m_children.size(); ++i ) {
+  for ( uint32 i = 0; i < cpy.m_children.size(); ++i ) {
     m_children.push_back( cpy.m_children[ i ] );
   }
 }
@@ -98,7 +98,7 @@ SearchNode SearchNode::operator=( const SearchNode &rhs ) {
   m_action = new Move( *( rhs.m_action ));
 
   m_children.clear();
-  for ( int i = 0; i < rhs.m_children.size(); ++i ) {
+  for ( uint32 i = 0; i < rhs.m_children.size(); ++i ) {
     m_children.push_back( rhs.m_children[ i ] );
   }
 

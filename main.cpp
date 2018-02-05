@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "ZTest.h"
 #include "LegalMoveGenerator.h"
@@ -35,7 +36,7 @@ int main( const int argc, const char **argv ) {
 
     p->printFile();
 
-    for ( int i = 0; i < sol->numMovesToSolution; ++i ) {
+    for ( uint32 i = 0; i < sol->numMovesToSolution; ++i ) {
       cout << sol->moves[ i ] << endl;
     }
 
