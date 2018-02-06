@@ -95,7 +95,9 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
       }
       result->moves[ 0 ] = sol->at( 0 );
 
+      /* Delete dynamic memory */
       delete sol;
+      delete state;
 
       return result;
     }
@@ -122,7 +124,10 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
       frontier.push( child );
     }
 
-  }
+    /* Delete copy of curNode's state */
+    delete state;
+
+  } // while frontier not empty
 
   result->solutionExists = false;
   return result;
