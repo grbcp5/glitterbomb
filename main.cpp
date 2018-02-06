@@ -82,6 +82,8 @@ int main( const int argc, const char **argv ) {
     cout << "Solution not found" << endl;
   }
 
+  /* Delete dynamic memory */
+  delete p;
   delete sol;
   delete searcher;
 
