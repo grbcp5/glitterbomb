@@ -13,8 +13,11 @@ run:
 dbgBuild:
 	g++ -g -v *.cpp
 
-valgrind: dbgBuild
+valgrind: clean dbgBuild
 	valgrind --track-origins=yes --leak-check=full a.out
 
 submit:
 	run.sh
+
+clean:
+	rm -f a.out

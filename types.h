@@ -62,39 +62,62 @@ struct Move {
         from(),
         to(),
         resultingMatches( 0 ),
-        matchedDevices( new std::vector< Point >()) {}
+        matchedDevices( NULL ) {
+   
+      matchedDevices = new std::vector< Point >(); 
+    }
 
     Move( Point f, Point t, uint32 points ) :
         from( f ),
         to( t ),
         resultingMatches( points ),
-        matchedDevices( new std::vector< Point >()) {}
+        matchedDevices( NULL ) {
+    
+      matchedDevices = new std::vector< Point >();
+    }
 
     Move( Point f, Point t, uint32 points, std::vector< Point > *locations ) :
         from( f ),
         to( t ),
         resultingMatches( points ),
-        matchedDevices( new std::vector< Point >() ) {
+        matchedDevices( NULL ) {
         
-          for( uint32 i = 0; i < locations->size(); i++ ) {
-            matchedDevices->push_back( locations->at( i ));
-          }
+      matchedDevices = new std::vector< Point >();
 
-        }
+      for( uint32 i = 0; i < locations->size(); i++ ) {
+        matchedDevices->push_back( locations->at( i ));
+      }
+
+    }
 
     Move( const Move &cpy ) :
         from( cpy.from ),
         to( cpy.to ),
         resultingMatches( cpy.resultingMatches ),
-        matchedDevices( new std::vector< Point >()) {
+        matchedDevices( NULL ) {
+
+      matchedDevices = new std::vector< Point >();
 
       if ( cpy.matchedDevices != NULL ) {
         for ( uint32 i = 0; i < cpy.matchedDevices->size(); ++i ) {
           matchedDevices->push_back( cpy.matchedDevices->at( i ));
         }
       }
-
     }
+
+   const Move &operator=( const Move &rhs ) {
+     
+     from = rhs.from;
+     to = rhs.to;
+     resultingMatches = rhs.resultingMatches;
+
+     matchedDevices->clear();
+     for( uint32 i = 0; i < rhs.matchedDevices->size(); i++ ) {
+       matchedDevices->push_back( rhs.matchedDevices->at( i ));
+     }
+
+     return ( *this );
+   }
 
     ~Move() {
       if ( matchedDevices != NULL ) {

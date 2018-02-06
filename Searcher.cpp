@@ -24,8 +24,13 @@ PuzzleSolution::PuzzleSolution()
 /* De-constructor */
 PuzzleSolution::~PuzzleSolution() {
 
-  delete initialState;
-  delete moves;
+  if( initialState != NULL ) {
+    delete initialState;
+  }
+
+  if( moves != NULL ) {
+    delete [] moves;
+  }
 
 }
 

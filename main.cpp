@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "ZTest.h"
 #include "LegalMoveGenerator.h"
@@ -47,7 +48,7 @@ int main( const int argc, const char **argv ) {
   }
 
   /* Local Variables */
-  Searcher *bfs = new BreadthFirstSearch();
+  Searcher *searcher = new BreadthFirstSearch();
   Puzzle *p;
 
   /* Get puzzle file */
@@ -59,7 +60,7 @@ int main( const int argc, const char **argv ) {
 
   /* Execute search */
   clock_t begin = clock();
-  PuzzleSolution *sol = bfs->search( p );
+  PuzzleSolution *sol = searcher->search( p );
   clock_t end = clock();
   double elapsed_secs = double( end - begin ) / CLOCKS_PER_SEC;
 
@@ -80,6 +81,9 @@ int main( const int argc, const char **argv ) {
     /* Indicate no solution found */
     cout << "Solution not found" << endl;
   }
+
+  delete sol;
+  delete searcher;
 
   return 0;
 }
