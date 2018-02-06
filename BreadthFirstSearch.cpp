@@ -122,10 +122,14 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
 
       /* Add child to frontier */
       frontier.push( child );
+
+      /* Delete dynamically allocated legal move */
+      delete ( children->at( i ) );
     }
 
-    /* Delete copy of curNode's state */
-    delete state;
+    /* Delete dynamic memory */
+    delete state;    // Delete copy of curNode's state
+    delete children; // Delete dynamically allocated vector from getLegalMove
 
   } // while frontier not empty
 
