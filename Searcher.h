@@ -34,7 +34,7 @@ private:
     const Move *m_action;
 
 public:
-    std::vector< const SearchNode * > m_children;
+    std::vector< SearchNode * > m_children;
 
     SearchNode();
 

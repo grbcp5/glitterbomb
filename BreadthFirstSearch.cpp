@@ -18,6 +18,38 @@
 
 using namespace std;
 
+
+/* Function:
+ *   deallocateAll
+ *
+ * Description:
+ *   Recursively deallocate search node and all its children
+ */
+
+void deallocateAll( SearchNode *&node ) {
+
+  /* Return if null pointer */
+  if ( node == NULL ) {
+    return;
+  }
+
+  /* Delete all children first */
+  for ( int i = 0; i < node->m_children.size(); ++i ) {
+    deallocateAll( node->m_children[ i ] );
+  }
+
+  /* Deallocate node */
+  delete node;
+  node = NULL;
+}
+
+
+/* Function:
+ *   search
+ * Description:
+ *   Does breadth first search to find a goal state
+ */
+
 PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
 
   /* Local Variables */
