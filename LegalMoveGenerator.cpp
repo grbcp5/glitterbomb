@@ -15,6 +15,13 @@
 
 using namespace std;
 
+
+/* Function:
+ *   checkHorizontalRange
+ * Description:
+ *   Determines the number of matched devices between col_min and col_max
+ */
+
 uint32 checkHorizontalRange(
     const Puzzle &p,
     const uint32 row,
@@ -63,12 +70,16 @@ uint32 checkHorizontalRange(
     return 0;
   }
 
-  // TODO: Check for subsequent matches
-
   /* Return the magnitude of the match */
   return similarDevices;
 }
 
+
+/* Function:
+ *   checkVerticalRange
+ * Description:
+ *   Determines the number of matched devices between row_min and row_max
+ */
 
 uint32 checkVerticalRange(
     const Puzzle &p,
@@ -118,11 +129,16 @@ uint32 checkVerticalRange(
     return 0;
   }
 
-  // TODO: Check for subsequent matches
-
   /* Return the magnitude of the match */
   return similarDevices;
 }
+
+
+/* Function:
+ *   checkForMatchesRightSwap
+ * Description:
+ *   Checks for any possible matched devices as a result of a right swap
+ */
 
 uint32 checkForMatchesRightSwap(
     const Puzzle &p,
@@ -208,6 +224,12 @@ uint32 checkForMatchesRightSwap(
 }
 
 
+/* Function:
+ *   checkForMatchesDownSwap
+ * Description:
+ *   Checks for any possible matched devices as a result of a down swap
+ */
+
 uint32 checkForMatchesDownSwap(
     const Puzzle &p,
     Point from,
@@ -292,6 +314,12 @@ uint32 checkForMatchesDownSwap(
 }
 
 
+/* Function:
+ *   resultingPointsFromMove
+ * Description:
+ *   Checks if a move results in any matched devices
+ */
+
 uint32 resultingPointsFromMove(
     const Puzzle *puzzle,
     Point from,
@@ -346,6 +374,12 @@ uint32 resultingPointsFromMove(
   return totalPoints;
 }
 
+
+/* Function:
+ *   getLegalMoves
+ * Description:
+ *   Returns all moves that result in matched devices
+ */
 
 vector< Move * > *getLegalMoves( const Puzzle *p ) {
 
