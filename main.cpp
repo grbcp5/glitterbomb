@@ -6,14 +6,26 @@
 
 using namespace std;
 
+/* Local Enumerations *********************************************************/
+
+
 enum ExecutionType {
     TEST = 0,
     RUN = 1
 };
 
-const char *PUZZLE_FILE_NAME = "puzzle1.txt";
+
+/* Constants ******************************************************************/
+
+
+const char *DEFAULT_PUZZLE_FILE_NAME = "puzzle1.txt";
+
+
+/* Function Declarations ******************************************************/
+
 
 ExecutionType getExecutionType( const int argc, const char **argv );
+
 
 /**
  * Function:
@@ -29,13 +41,21 @@ ExecutionType getExecutionType( const int argc, const char **argv );
 
 int main( const int argc, const char **argv ) {
 
+  /* Branch to test environment */
   if ( getExecutionType( argc, argv ) == TEST ) {
     return ZTest::executeAllTests();
   }
 
   /* Local Variables */
   Searcher *bfs = new BreadthFirstSearch();
-  Puzzle *p = Puzzle::construct( PUZZLE_FILE_NAME );
+  Puzzle *p;
+
+  /* Get puzzle file */
+  if ( argc > 1 ) {
+    p = Puzzle::construct( argv[ 1 ] );
+  } else {
+    p = Puzzle::construct( DEFAULT_PUZZLE_FILE_NAME );
+  }
 
   /* Execute search */
   clock_t begin = clock();
@@ -52,6 +72,7 @@ int main( const int argc, const char **argv ) {
       cout << sol->moves[ i ] << endl;
     }
 
+    /* Print elapsed time to standard output */
     cout << elapsed_secs << endl;
 
   } else {
@@ -62,6 +83,9 @@ int main( const int argc, const char **argv ) {
 
   return 0;
 }
+
+
+/* Function Definitions *******************************************************/
 
 
 ExecutionType getExecutionType( const int argc, const char **argv ) {
