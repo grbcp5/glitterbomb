@@ -114,7 +114,6 @@ SearchNode SearchNode::operator=( const SearchNode &rhs ) {
 SearchNode::~SearchNode() {
 
   delete m_initialState;
-  delete m_parent;
   delete m_action;
 
 }

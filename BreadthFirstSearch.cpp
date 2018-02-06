@@ -99,6 +99,9 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
       delete sol;
       delete state;
 
+      /* Deallocate search tree */
+      deallocateAll( initialState );
+
       return result;
     }
 
@@ -132,6 +135,9 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
     delete children; // Delete dynamically allocated vector from getLegalMove
 
   } // while frontier not empty
+
+  /* Deallocate search tree */
+  deallocateAll( initialState );
 
   result->solutionExists = false;
   return result;
