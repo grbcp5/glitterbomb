@@ -13,16 +13,20 @@
 class Puzzle {
 
 private:
+    /* Private member variables ***********************************************/
     uint8 **m_grid;
 
+    /* Private helper functions ***********************************************/
     void fallDown( const uint32 row, const uint32 col, const uint32 n );
 
 public:
     static const uint8 NO_DEVICE = 0;
 
+    /* Public Properties ******************************************************/
     uint32 m_score;
     uint32 m_swaps_used;
 
+    /* Member Constants *******************************************************/
     const uint32 m_quota;
     const uint32 m_num_swaps;
     const uint32 m_num_device_types;
@@ -31,7 +35,8 @@ public:
     const uint32 m_pool_height;
     const uint32 m_bonus_rules;
 
-    /* No grid initializer */
+    /* Constructors ***********************************************************/
+
     Puzzle(
         const uint32 quota,
         const uint32 num_swaps,
@@ -42,7 +47,6 @@ public:
         const uint32 bonus_rules
     );
 
-    /* Deep grid copy */
     Puzzle(
         const uint32 quota,
         const uint32 num_swaps,
@@ -54,13 +58,12 @@ public:
         const uint8 **grid
     );
 
-    /* Deep copy constructor */
     Puzzle( const Puzzle &cpy );
 
-    /* Safe destructor */
+    /* Destructor *************************************************************/
     ~Puzzle();
 
-    /* Member functions */
+    /* Member Functions *******************************************************/
     void printFile() const;
 
     void swap( const Point from, const Point to );
@@ -83,14 +86,16 @@ public:
 
     bool isSolved() const;
 
-    /* Static functions */
+    /* Static Functions *******************************************************/
     static Puzzle *construct(std::istream &in);
 
     static Puzzle *construct( const char *fileName );
 
-    /* Friend functions */
+    /* Friend functions *******************************************************/
     friend std::ostream &operator<<(std::ostream &out, const Puzzle &p);
 };
+
+/* Function Declarations ******************************************************/
 
 void swap( uint8 **grid, Point from, Point to );
 

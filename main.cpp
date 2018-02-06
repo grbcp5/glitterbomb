@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 
 #include "ZTest.h"
 #include "LegalMoveGenerator.h"
@@ -16,6 +15,17 @@ const char *PUZZLE_FILE_NAME = "puzzle1.txt";
 
 ExecutionType getExecutionType( const int argc, const char **argv );
 
+/**
+ * Function:
+ *   main
+ *
+ * Description:
+ *   Entry point to program
+ *
+ * @param argc count of command line arguments
+ * @param argv value of command line arguments
+ * @return status of execution
+ */
 
 int main( const int argc, const char **argv ) {
 
@@ -27,15 +37,17 @@ int main( const int argc, const char **argv ) {
   Searcher *bfs = new BreadthFirstSearch();
   Puzzle *p = Puzzle::construct( PUZZLE_FILE_NAME );
 
+  /* Execute search */
   clock_t begin = clock();
   PuzzleSolution *sol = bfs->search( p );
   clock_t end = clock();
   double elapsed_secs = double( end - begin ) / CLOCKS_PER_SEC;
 
+  /* If solution was found */
   if ( sol->solutionExists ) {
 
+    /* Print solution to standard output */
     p->printFile();
-
     for ( uint32 i = 0; i < sol->numMovesToSolution; ++i ) {
       cout << sol->moves[ i ] << endl;
     }
@@ -43,6 +55,8 @@ int main( const int argc, const char **argv ) {
     cout << elapsed_secs << endl;
 
   } else {
+
+    /* Indicate no solution found */
     cout << "Solution not found" << endl;
   }
 

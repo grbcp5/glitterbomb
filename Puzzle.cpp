@@ -16,7 +16,32 @@
 
 using namespace std;
 
-/* Constructor with no grid initializer */
+
+/* Function:
+ *   fallDown
+ *
+ * Description:
+ *   moves all devices above (row,col) down one position and fills the top
+ *   position in the column with the standard replacement
+ */
+
+void Puzzle::fallDown( const uint32 row, const uint32 col, const uint32 n ) {
+
+  for ( int r = row; r > 0; --r ) {
+    m_grid[ r ][ col ] = m_grid[ r - 1 ][ col ];
+  }
+
+  m_grid[ 0 ][ col ] = getReplacement( col, n );
+}
+
+
+/* Function:
+ *   Constructor
+ *
+ * Description:
+ *   Constructor with no grid initializer
+ */
+
 Puzzle::Puzzle(
     const uint32 quota,
     const uint32 num_swaps,
@@ -51,7 +76,13 @@ Puzzle::Puzzle(
 }
 
 
-/* Deep copy grid */
+/* Function:
+ *   Constructor
+ *
+ * Description:
+ *   Constructor with grid initializer that makes deep copy of dynamic memory
+ */
+
 Puzzle::Puzzle(
     const uint32 quota,
     const uint32 num_swaps,
@@ -77,7 +108,13 @@ Puzzle::Puzzle(
 }
 
 
-/* Copy Constructor */
+/* Function:
+ *   Constructor
+ *
+ * Description:
+ *   Copy constructor with deep copy of dynamic memory
+ */
+
 Puzzle::Puzzle( const Puzzle &cpy ) :
     m_grid( NULL ),
     m_score( cpy.m_score ),
@@ -93,7 +130,13 @@ Puzzle::Puzzle( const Puzzle &cpy ) :
 }
 
 
-/* Destructor */
+/* Function:
+ *   Destructor
+ *
+ * Description:
+ *   Properly deallocate dynamic memory
+ */
+
 Puzzle::~Puzzle() {
   for ( uint32 r = 0; r < m_grid_height; r++ ) {
     delete[] m_grid[ r ];
@@ -102,91 +145,57 @@ Puzzle::~Puzzle() {
 }
 
 
-Puzzle *Puzzle::construct( std::istream &in ) {
-  uint32 quota, num_swaps, num_device_types, grid_width, grid_height,
-      pool_height, bonus_rules;
+/* Function:
+ *   printFile
+ *
+ * Description:
+ *   Prints the puzzle to standard output in file format
+ */
 
-  int grid_value;
+void Puzzle::printFile() const {
 
-  in >> quota >> num_swaps >> num_device_types >> grid_width >> grid_height
-     >> pool_height >> bonus_rules;
+  std::cout << m_quota << endl
+            << m_num_swaps << endl
+            << m_num_device_types << endl
+            << m_grid_width << endl
+            << m_grid_height << endl
+            << m_pool_height << endl;
 
-  Puzzle *result = new Puzzle(
-      ( uint32 ) quota,
-      num_swaps,
-      num_device_types,
-      grid_width,
-      grid_height,
-      pool_height,
-      bonus_rules
-  );
-
-  for ( uint32 r = 0; r < result->m_grid_height; r++ ) {
-    for ( uint32 c = 0; c < result->m_grid_width; c++ ) {
-      in >> grid_value;
-      result->m_grid[ r ][ c ] = ( uint8 ) grid_value;
+  for ( uint32 r = 0; r < m_grid_height; r++ ) {
+    for ( uint32 c = 0; c < m_grid_width; c++ ) {
+      cout << (( int ) m_grid[ r ][ c ] ) << " ";
     }
+    cout << std::endl;
   }
 
-  return result;
 }
 
 
-Puzzle *Puzzle::construct( const char *fileName ) {
-  Puzzle *result = NULL;
+/* Function:
+ *   swap
+ *
+ * Description:
+ *   swaps two values in the puzzle's grid
+ *
+ * Note:
+ *   Does NOT check if values are in range
+ */
 
-  std::ifstream fin;
-  fin.open( fileName );
-  result = construct( fin );
-  fin.close();
-
-  return result;
-}
-
-
-std::ostream &operator<<( std::ostream &out, const Puzzle &p ) {
-
-  out << "Score: " << p.m_score
-      << "\nSwaps: " << p.m_swaps_used
-      << "\nQuota: " << p.m_quota
-      << "\nAllowed Swaps: " << p.m_num_swaps
-      << "\nNum Device Types: " << p.m_num_device_types
-      << "\nGrid (WxH): (" << p.m_grid_width << "x" << p.m_grid_height << ")"
-      << "\nPool Height: " << p.m_pool_height
-      << "\nPuzzle Values:" << std::endl;
-
-  for ( uint32 r = 0; r < p.m_grid_height; r++ ) {
-
-    if ( r == p.m_pool_height ) {
-      for ( uint32 i = 0; i < ( 2 * p.m_grid_width ); ++i ) {
-        out << "-";
-      }
-      out << std::endl;
-    }
-
-    for ( uint32 c = 0; c < p.m_grid_width; c++ ) {
-      out << (( int ) p.m_grid[ r ][ c ] ) << " ";
-    }
-    out << std::endl;
-  }
-
-  return out;
-}
-
-void swap( uint8 **m_grid, Point from, Point to ) {
-
-  uint8 temp;
-
-  temp = m_grid[ to.row ][ to.col ];
-  m_grid[ to.row ][ to.col ] = m_grid[ from.row ][ from.col ];
-  m_grid[ from.row ][ from.col ] = temp;
-
-  return;
-}
 
 void Puzzle::swap( const Point from, const Point to ) {
   ::swap( m_grid, from, to );
 }
+
+
+/* Function:
+ *   makeMove
+ *
+ * Description:
+ *   makes move, and removes all the matched devices from the move
+ *
+ * Note:
+ *   moves "matched devices" field must already be populated
+ */
 
 uint32 Puzzle::makeMove( Move &m, const bool showWork ) {
 
@@ -242,6 +251,17 @@ uint32 Puzzle::makeMove( Move &m, const bool showWork ) {
   return scoreFromMove;
 }
 
+
+/* Function:
+ *   getDeviceType
+ *
+ * Description:
+ *   Gets the device type at the position in the puzzle grid
+ *
+ * Note:
+ *   Returns device type of 0 if the point is out of range of the grid
+ */
+
 uint8 Puzzle::getDeviceType( Point p ) const {
 
   /* Return no device if out of bounds */
@@ -254,10 +274,27 @@ uint8 Puzzle::getDeviceType( Point p ) const {
 }
 
 
+/* Function:
+ *   getDeviceType
+ *
+ * Description:
+ *   Gets the device type at the position in the puzzle grid
+ *
+ * Note:
+ *   Returns device type of 0 if the point is out of range of the grid
+ */
+
 uint8 Puzzle::getDeviceType( uint32 r, uint32 c ) const {
   return getDeviceType( Point( r, c ));
 }
 
+
+/* Function:
+ *   getCopyOfGrid
+ *
+ * Description:
+ *   Returns a deep copy of the puzzle grid
+ */
 
 uint8 **Puzzle::getCopyOfGrid() const {
   return copyGrid(
@@ -267,10 +304,26 @@ uint8 **Puzzle::getCopyOfGrid() const {
   );
 }
 
-bool Puzzle::isSolved() const {
-  return m_score >= m_quota;
+
+/* Function:
+ *   getReplacement
+ *
+ * Description:
+ *   gets the replacement device type
+ */
+
+uint8 Puzzle::getReplacement( const uint32 x, const uint32 devRepl ) {
+  return ( uint8 ) ((( getDeviceType( 1, x ) + x + devRepl ) %
+                     m_num_device_types ) + 1 );
 }
 
+
+/* Function:
+ *   removeMatches
+ *
+ * Description:
+ *   marks all positions in vector v as 0
+ */
 
 void Puzzle::removeMatches( const std::vector< Point > &v ) {
 
@@ -283,20 +336,13 @@ void Puzzle::removeMatches( const std::vector< Point > &v ) {
 }
 
 
-uint8 Puzzle::getReplacement( const uint32 x, const uint32 devRepl ) {
-  return ( uint8 ) ((( getDeviceType( 1, x ) + x + devRepl ) %
-                     m_num_device_types ) + 1 );
-}
-
-void Puzzle::fallDown( const uint32 row, const uint32 col, const uint32 n ) {
-
-  for ( int r = row; r > 0; --r ) {
-    m_grid[ r ][ col ] = m_grid[ r - 1 ][ col ];
-  }
-
-  m_grid[ 0 ][ col ] = getReplacement( col, n );
-}
-
+/* Function:
+ *   fillEmptyPositions
+ *
+ * Description:
+ *   Fills all 0's in grid with appropriate values according to the assignment
+ *   document
+ */
 
 void Puzzle::fillEmptyPoints() {
 
@@ -313,6 +359,14 @@ void Puzzle::fillEmptyPoints() {
   }
 
 }
+
+
+/* Function:
+ *   findAllExistingMatches
+ *
+ * Description:
+ *   Searches entire grid and returns any matches found
+ */
 
 std::vector< Point > *Puzzle::findAllExistingMatches() const {
 
@@ -358,24 +412,140 @@ std::vector< Point > *Puzzle::findAllExistingMatches() const {
   return result;
 }
 
-void Puzzle::printFile() const {
 
-  std::cout << m_quota << endl
-            << m_num_swaps << endl
-            << m_num_device_types << endl
-            << m_grid_width << endl
-            << m_grid_height << endl
-            << m_pool_height << endl;
+/* Function:
+ *   isSolved
+ *
+ * Description:
+ *   Indicates if the puzzle's quota has been met
+ */
 
-  for ( uint32 r = 0; r < m_grid_height; r++ ) {
-    for ( uint32 c = 0; c < m_grid_width; c++ ) {
-      cout << (( int ) m_grid[ r ][ c ] ) << " ";
-    }
-    cout << std::endl;
-  }
-
+bool Puzzle::isSolved() const {
+  return m_score >= m_quota;
 }
 
+
+/* Function:
+ *   Construct
+ *
+ * Description:
+ *   Build a puzzle from an input stream
+ */
+
+Puzzle *Puzzle::construct( std::istream &in ) {
+  uint32 quota, num_swaps, num_device_types, grid_width, grid_height,
+      pool_height, bonus_rules;
+
+  int grid_value;
+
+  in >> quota >> num_swaps >> num_device_types >> grid_width >> grid_height
+     >> pool_height >> bonus_rules;
+
+  Puzzle *result = new Puzzle(
+      ( uint32 ) quota,
+      num_swaps,
+      num_device_types,
+      grid_width,
+      grid_height,
+      pool_height,
+      bonus_rules
+  );
+
+  for ( uint32 r = 0; r < result->m_grid_height; r++ ) {
+    for ( uint32 c = 0; c < result->m_grid_width; c++ ) {
+      in >> grid_value;
+      result->m_grid[ r ][ c ] = ( uint8 ) grid_value;
+    }
+  }
+
+  return result;
+}
+
+
+/* Function:
+ *   Construct
+ *
+ * Description:
+ *   Build a puzzle from a file using an input stream
+ */
+
+Puzzle *Puzzle::construct( const char *fileName ) {
+  Puzzle *result = NULL;
+
+  std::ifstream fin;
+  fin.open( fileName );
+  result = construct( fin );
+  fin.close();
+
+  return result;
+}
+
+
+/* Function:
+ *   operator<<
+ *
+ * Description:
+ *   Outputs puzzle to output stream
+ */
+
+std::ostream &operator<<( std::ostream &out, const Puzzle &p ) {
+
+  out << "Score: " << p.m_score
+      << "\nSwaps: " << p.m_swaps_used
+      << "\nQuota: " << p.m_quota
+      << "\nAllowed Swaps: " << p.m_num_swaps
+      << "\nNum Device Types: " << p.m_num_device_types
+      << "\nGrid (WxH): (" << p.m_grid_width << "x" << p.m_grid_height << ")"
+      << "\nPool Height: " << p.m_pool_height
+      << "\nPuzzle Values:" << std::endl;
+
+  for ( uint32 r = 0; r < p.m_grid_height; r++ ) {
+
+    if ( r == p.m_pool_height ) {
+      for ( uint32 i = 0; i < ( 2 * p.m_grid_width ); ++i ) {
+        out << "-";
+      }
+      out << std::endl;
+    }
+
+    for ( uint32 c = 0; c < p.m_grid_width; c++ ) {
+      out << (( int ) p.m_grid[ r ][ c ] ) << " ";
+    }
+    out << std::endl;
+  }
+
+  return out;
+}
+
+
+/* Function:
+ *   swap
+ *
+ * Description:
+ *   swaps two values in grid
+ *
+ * Note:
+ *   Does NOT check if values are in range
+ */
+
+void swap( uint8 **m_grid, Point from, Point to ) {
+
+  uint8 temp;
+
+  temp = m_grid[ to.row ][ to.col ];
+  m_grid[ to.row ][ to.col ] = m_grid[ from.row ][ from.col ];
+  m_grid[ from.row ][ from.col ] = temp;
+
+  return;
+}
+
+
+/* Function:
+ *   copyGrid
+ *
+ * Description:
+ *   Returns a deep copy of the grid
+ */
 
 uint8 **copyGrid(
     const uint8 **const m_grid,
@@ -405,6 +575,15 @@ uint8 **copyGrid(
   return result;
 }
 
+
+/* Function:
+ *   formulatePoint
+ *
+ * Description:
+ *   Turns a point in a direction to a point adjacent to the original point in
+ *   the direction of the indicated direction
+ */
+
 Point formulatePoint( const uint32 r, const uint32 c, const Direction d ) {
 
   switch ( d ) {
@@ -420,6 +599,15 @@ Point formulatePoint( const uint32 r, const uint32 c, const Direction d ) {
 
   return Point( r, c );
 }
+
+
+/* Function:
+ *   addIfNew
+ *
+ * Description:
+ *   Searches a vector for point newPoint, if the point is not in the vector,
+ *   it adds it to the end
+ */
 
 void addIfNew( std::vector< Point > *v, Point newPoint ) {
 
