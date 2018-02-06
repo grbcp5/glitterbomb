@@ -95,6 +95,8 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
       }
       result->moves[ 0 ] = sol->at( 0 );
 
+      delete sol;
+
       return result;
     }
 
