@@ -1,23 +1,43 @@
-default: buildAndRun
+###############################################################################
+#
+# File:
+#   makefile
+#
+# Description:
+#   Makefile for glitterbomb AI
+#
+# Author:
+#   Grant Broadwater
+#
+###############################################################################
 
-buildAndRun: build run
+CC:=g++
+SRCDIR:=src
+BUILDDIR:=build
+TARGETDIR:=bin
+TARGET:=bin/glitterbomb
 
-build: relBuild
+SRCEXT:=cpp
+SOURCES:=$(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+OBJECTS:=$(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+CFLAGS:=-g
+INC:=-I include
 
-relBuild:
-	g++ -v *.cpp
+$(TARGET): $(OBJECTS)
+	@mkdir -p $(TARGETDIR)
+	@echo "Linking..."
+	@echo "$(CC) $^ -o $(TARGET)"; $(CC) $^ -o $(TARGET)
 
-run:
-	./a.out
-
-dbgBuild:
-	g++ -g -v *.cpp
-
-valgrind: clean dbgBuild
-	valgrind --track-origins=yes --leak-check=full a.out
-
-submit:
-	run.sh
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+	@mkdir -p $(BUILDDIR)
+	@echo "$(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	rm -f a.out
+	@echo "Cleaning..."; 
+	@echo "$(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+
+run: $(TARGET)
+	@echo "$(TARGET) $(PUZZLE)"; $(TARGET) $(PUZZLE)
+
+valgrind: $(TARGET)
+	@echo "valgrind $(TARGET)"; valgrind --track-origins=yes --leak-check=full $(TARGET) 

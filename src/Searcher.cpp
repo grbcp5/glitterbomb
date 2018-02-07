@@ -11,7 +11,7 @@
  *
  ******************************************************************************/
 
-#include "Searcher.h"
+#include "../include/Searcher.h"
 
 /* Default Constructor */
 PuzzleSolution::PuzzleSolution()

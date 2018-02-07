@@ -11,7 +11,7 @@
  *
  ******************************************************************************/
 
-#include "LegalMoveGenerator.h"
+#include "../include/LegalMoveGenerator.h"
 
 using namespace std;
 

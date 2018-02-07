@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "ZTest.h"
-#include "LegalMoveGenerator.h"
-#include "BreadthFirstSearch.h"
+#include "../include/ZTest.h"
+#include "../include/LegalMoveGenerator.h"
+#include "../include/BreadthFirstSearch.h"
 
 using namespace std;
 

@@ -11,8 +11,8 @@
  *
  ******************************************************************************/
 
-#include "BreadthFirstSearch.h"
-#include "LegalMoveGenerator.h"
+#include "../include/BreadthFirstSearch.h"
+#include "../include/LegalMoveGenerator.h"
 
 #include <queue>
 
