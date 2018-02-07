@@ -37,7 +37,7 @@ struct CmdArgs {
 
 #define TEST_CMD_FLAG 1u
 
-#define DEFAULT_PUZZLE_FILE_NAME "puzzle1.txt"
+const char *DEFAULT_PUZZLE_FILE_NAME = "puzzle1.txt";
 
 /* Function Declarations ******************************************************/
 

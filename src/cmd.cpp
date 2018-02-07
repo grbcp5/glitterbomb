@@ -78,7 +78,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
   } else {
 
     /* Create memory for default puzzle file */
-    newPuzzleFile = new char[strlen( DEFAULT_PUZZLE_FILE_NAME )];
+    newPuzzleFile = new char[strlen( DEFAULT_PUZZLE_FILE_NAME ) + 1];
     strcpy( newPuzzleFile, DEFAULT_PUZZLE_FILE_NAME );
 
     /* Add default to cmd args */
