@@ -11,11 +11,11 @@
  *
  ******************************************************************************/
 
-#include "../include/ZTest.h"
+#include "ZTest.h"
 
 #include <iostream>
 
-#include "../include/ZTestLegalMoveGenerator.h"
+#include "ZTestLegalMoveGenerator.h"
 
 using namespace std;
 

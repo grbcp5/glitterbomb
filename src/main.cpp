@@ -2,20 +2,12 @@
 #include <fstream>
 #include <cstring>
 
-#include "../include/ZTest.h"
-#include "../include/LegalMoveGenerator.h"
-#include "../include/BreadthFirstSearch.h"
+#include "ZTest.h"
+#include "LegalMoveGenerator.h"
+#include "BreadthFirstSearch.h"
+#include "cmd.h"
 
 using namespace std;
-
-/* Local Enumerations *********************************************************/
-
-
-enum ExecutionType {
-    TEST = 0,
-    RUN = 1
-};
-
 
 /* Constants ******************************************************************/
 
@@ -24,9 +16,6 @@ const char *DEFAULT_PUZZLE_FILE_NAME = "puzzle1.txt";
 
 
 /* Function Declarations ******************************************************/
-
-
-ExecutionType getExecutionType( const int argc, const char **argv );
 
 void printLine( const uint32 length = 80u, const char c = '*' );
 
@@ -126,38 +115,6 @@ int main( const int argc, const char **argv ) {
 
 
 /* Function Definitions *******************************************************/
-
-
-ExecutionType getExecutionType( const int argc, const char **argv ) {
-
-  /* Local variables */
-  char *firstParameter;
-
-  /* Default to RUN */
-  if ( argc == 1 ) {
-    return RUN;
-  }
-
-  /* Initialize */
-  firstParameter = new char[strlen( argv[ 1 ] ) + 1];
-  strcpy( firstParameter, argv[ 1 ] );
-
-  /* Convert first parameter to lower case */
-  for ( uint32 i = 0; i < strlen( firstParameter ); ++i ) {
-    firstParameter[ i ] = ( char ) tolower( firstParameter[ i ] );
-  }
-
-  /* Check for test parameter */
-  if ( strcmp( firstParameter, "test" ) == 0 ) {
-    delete[] firstParameter;
-    return TEST;
-  }
-
-  delete [] firstParameter;
-
-  /* Default to RUN */
-  return RUN;
-}
 
 
 void printLine( const uint32 length, const char c ) {

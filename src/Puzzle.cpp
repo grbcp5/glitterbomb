@@ -11,7 +11,7 @@
  *
  ******************************************************************************/
 
-#include "../include/Puzzle.h"
+#include "Puzzle.h"
 #include <fstream>
 
 using namespace std;
