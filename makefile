@@ -40,4 +40,4 @@ run: $(TARGET)
 	@echo "$(TARGET) $(PUZZLE)"; $(TARGET) $(PUZZLE)
 
 valgrind: $(TARGET)
-	@echo "valgrind $(TARGET)"; valgrind --track-origins=yes --leak-check=full $(TARGET) 
+	@echo "valgrind $(TARGET)"; valgrind --track-origins=yes --leak-check=full $(TARGET) $(PUZZLE)

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 #include "../include/ZTest.h"
 #include "../include/LegalMoveGenerator.h"
@@ -152,7 +153,7 @@ ExecutionType getExecutionType( const int argc, const char **argv ) {
     return TEST;
   }
 
-  delete firstParameter;
+  delete [] firstParameter;
 
   /* Default to RUN */
   return RUN;
