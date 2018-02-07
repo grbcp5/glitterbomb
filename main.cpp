@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstring>
+#include <fstream>
 
 #include "ZTest.h"
 #include "LegalMoveGenerator.h"
@@ -27,6 +27,7 @@ const char *DEFAULT_PUZZLE_FILE_NAME = "puzzle1.txt";
 
 ExecutionType getExecutionType( const int argc, const char **argv );
 
+void printLine( const uint32 length = 80u, const char c = '*' );
 
 /**
  * Function:
@@ -42,27 +43,59 @@ ExecutionType getExecutionType( const int argc, const char **argv );
 
 int main( const int argc, const char **argv ) {
 
+  /* Local Variables */
+  ifstream puzzleFileStream;
+  Searcher *searcher = new BreadthFirstSearch();
+  Puzzle *p;
+
+  /* Greet User */
+  printLine( 80u, '*' );
+  cout << "*\n* Welcome to Glitterbomb.\n*\n"
+       << "* A Mechanical Match artificial intelligence.\n*\n"
+       << "* Assignment Document:\n*\t"
+       << "http://web.mst.edu/~tauritzd/courses/cs5400/sp2018/puzzle.html\n*\n"
+       << "* Repository:\n*\thttps://github.com/grbcp5/glitterbomb\n*\n";
+  printLine( 80u, '*' );
+  cout << endl;
+
   /* Branch to test environment */
   if ( getExecutionType( argc, argv ) == TEST ) {
     return ZTest::executeAllTests();
   }
 
-  /* Local Variables */
-  Searcher *searcher = new BreadthFirstSearch();
-  Puzzle *p;
-
   /* Get puzzle file */
   if ( argc > 1 ) {
-    p = Puzzle::construct( argv[ 1 ] );
+    puzzleFileStream.open( argv[ 1 ] );
+
+    cout << "Using program argument \"" << argv[ 1 ] << "\" as puzzle file."
+         << endl;
+
   } else {
-    p = Puzzle::construct( DEFAULT_PUZZLE_FILE_NAME );
+    puzzleFileStream.open( DEFAULT_PUZZLE_FILE_NAME );
+
+    cout << "Using default value \"" << DEFAULT_PUZZLE_FILE_NAME
+         << "\" as puzzle file." << endl;
   }
 
+  /* Check valid file */
+  if ( !puzzleFileStream.good()) {
+    cout << "Error, invalid puzzle file." << endl;
+    return 1;
+  }
+
+  /* Construct puzzle */
+  cout << "Reading in puzzle from file." << endl;
+  p = Puzzle::construct( puzzleFileStream );
+  cout << "Puzzle file read successfully." << endl;
+  puzzleFileStream.close();
+
   /* Execute search */
+  cout << "Beginning search." << endl;
   clock_t begin = clock();
   PuzzleSolution *sol = searcher->search( p );
   clock_t end = clock();
   double elapsed_secs = double( end - begin ) / CLOCKS_PER_SEC;
+  cout << "Search completed.\n" << endl;
 
   /* If solution was found */
   if ( sol->solutionExists ) {
@@ -123,4 +156,15 @@ ExecutionType getExecutionType( const int argc, const char **argv ) {
 
   /* Default to RUN */
   return RUN;
+}
+
+
+void printLine( const uint32 length, const char c ) {
+
+  for ( uint32 i = 0; i < length; i++ ) {
+    cout << c;
+  }
+  cout << endl;
+
+  return;
 }

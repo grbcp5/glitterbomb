@@ -73,6 +73,8 @@ public:
 
     virtual PuzzleSolution *search( Puzzle *puzzle ) const = 0;
 
+    virtual ~Searcher() {};
+
 };
 
 
