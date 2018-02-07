@@ -5,18 +5,42 @@
 #ifndef GLITTERBOMB_CMD_H
 #define GLITTERBOMB_CMD_H
 
+#include <vector>
+
+#include "types.h"
+
 /* Types **********************************************************************/
 
+struct CmdArgs {
+    uint32 flags;
+    uint32 numPuzzleFiles;
+    const char **puzzleFileNames;
 
-enum ExecutionType {
-    TEST = 0,
-    RUN = 1
+    CmdArgs() :
+        flags( 0 ),
+        numPuzzleFiles( 0 ),
+        puzzleFileNames( NULL ) {}
+
+    ~CmdArgs() {
+      if ( puzzleFileNames != NULL ) {
+
+        for ( int i = 0; i < numPuzzleFiles; ++i ) {
+          delete[] puzzleFileNames[ i ];
+        }
+
+        delete[] puzzleFileNames;
+      }
+    }
 };
 
+/* Constants ******************************************************************/
+
+#define TEST_CMD_FLAG 1u
+
+#define DEFAULT_PUZZLE_FILE_NAME "puzzle1.txt"
 
 /* Function Declarations ******************************************************/
 
-
-ExecutionType getExecutionType( const int argc, const char **argv );
+CmdArgs *getCommandLineArguments( const int argc, const char **argv );
 
 #endif //GLITTERBOMB_CMD_H

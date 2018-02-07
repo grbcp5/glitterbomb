@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <cmd.h>
 
 #include "ZTest.h"
 #include "LegalMoveGenerator.h"
@@ -12,12 +13,13 @@ using namespace std;
 /* Constants ******************************************************************/
 
 
-const char *DEFAULT_PUZZLE_FILE_NAME = "puzzle1.txt";
 
 
 /* Function Declarations ******************************************************/
 
+
 void printLine( const uint32 length = 80u, const char c = '*' );
+
 
 /**
  * Function:
@@ -35,7 +37,8 @@ int main( const int argc, const char **argv ) {
 
   /* Local Variables */
   ifstream puzzleFileStream;
-  Searcher *searcher = new BreadthFirstSearch();
+  CmdArgs *cmdArgs;
+  Searcher *searcher;
   Puzzle *p;
 
   /* Greet User */
@@ -48,67 +51,76 @@ int main( const int argc, const char **argv ) {
   printLine( 80u, '*' );
   cout << endl;
 
-  /* Branch to test environment */
-  if ( getExecutionType( argc, argv ) == TEST ) {
+  /* Get command line arguments */
+  cmdArgs = getCommandLineArguments( argc, argv );
+
+  /* Branch for testing procedure */
+  if ( cmdArgs->flags & TEST_CMD_FLAG ) {
+
+    delete cmdArgs;
+
     return ZTest::executeAllTests();
   }
 
-  /* Get puzzle file */
-  if ( argc > 1 ) {
-    puzzleFileStream.open( argv[ 1 ] );
+  /* For each puzzle file */
+  for ( int q = 0; q < cmdArgs->numPuzzleFiles; ++q ) {
 
-    cout << "Using program argument \"" << argv[ 1 ] << "\" as puzzle file."
+    cout << "\n\n----- Puzzle file " << ( q + 1 ) << " -----" << endl;
+
+    /* Get puzzle file */
+    puzzleFileStream.open( cmdArgs->puzzleFileNames[ q ] );
+    cout << "Using " << cmdArgs->puzzleFileNames[ q ] << " as puzzle file."
          << endl;
 
-  } else {
-    puzzleFileStream.open( DEFAULT_PUZZLE_FILE_NAME );
-
-    cout << "Using default value \"" << DEFAULT_PUZZLE_FILE_NAME
-         << "\" as puzzle file." << endl;
-  }
-
-  /* Check valid file */
-  if ( !puzzleFileStream.good()) {
-    cout << "Error, invalid puzzle file." << endl;
-    return 1;
-  }
-
-  /* Construct puzzle */
-  cout << "Reading in puzzle from file." << endl;
-  p = Puzzle::construct( puzzleFileStream );
-  cout << "Puzzle file read successfully." << endl;
-  puzzleFileStream.close();
-
-  /* Execute search */
-  cout << "Beginning search." << endl;
-  clock_t begin = clock();
-  PuzzleSolution *sol = searcher->search( p );
-  clock_t end = clock();
-  double elapsed_secs = double( end - begin ) / CLOCKS_PER_SEC;
-  cout << "Search completed.\n" << endl;
-
-  /* If solution was found */
-  if ( sol->solutionExists ) {
-
-    /* Print solution to standard output */
-    p->printFile();
-    for ( uint32 i = 0; i < sol->numMovesToSolution; ++i ) {
-      cout << sol->moves[ i ] << endl;
+    /* Check valid file */
+    if ( !puzzleFileStream.good()) {
+      cout << "Error, invalid puzzle file." << endl;
+      continue;
     }
 
-    /* Print elapsed time to standard output */
-    cout << elapsed_secs << endl;
+    /* Construct puzzle */
+    cout << "Reading in puzzle from file." << endl;
+    p = Puzzle::construct( puzzleFileStream );
+    cout << "Puzzle file read successfully." << endl;
+    puzzleFileStream.close();
 
-  } else {
+    /* Initialize searcher */
+    searcher = new BreadthFirstSearch();
 
-    /* Indicate no solution found */
-    cout << "Solution not found" << endl;
+    /* Execute search */
+    cout << "Beginning search." << endl;
+    clock_t begin = clock();
+    PuzzleSolution *sol = searcher->search( p );
+    clock_t end = clock();
+    double elapsed_secs = double( end - begin ) / CLOCKS_PER_SEC;
+    cout << "Search completed.\n" << endl;
+
+    /* If solution was found */
+    if ( sol->solutionExists ) {
+
+      /* Print solution to standard output */
+      p->printFile();
+      for ( uint32 i = 0; i < sol->numMovesToSolution; ++i ) {
+        cout << sol->moves[ i ] << endl;
+      }
+
+      /* Print elapsed time to standard output */
+      cout << elapsed_secs << endl;
+
+    } else {
+
+      /* Indicate no solution found */
+      cout << "Solution not found" << endl;
+    }
+
+    /* Delete dynamic memory */
+    delete p;
+    delete sol;
+    delete searcher;
+
   }
 
-  /* Delete dynamic memory */
-  delete p;
-  delete sol;
-  delete searcher;
+  delete cmdArgs;
 
   return 0;
 }
