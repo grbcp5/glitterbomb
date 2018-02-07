@@ -32,6 +32,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     argHandled = false;
     arg_len = strlen( argv[ i ] );
     arg = new char[arg_len + 1];
+    strcpy( arg, argv[ i ] );
     for ( int c = 0; c < strlen( argv[ i ] ); ++c ) {
       /* Make each char lower case */
       arg[ c ] = ( char ) tolower( argv[ i ][ c ] );
@@ -55,10 +56,10 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     if ( !argHandled ) {
 
       /* Add it to list of puzzle files */
-      newPuzzleFile = new char[strlen( arg )]; // Allocate new memory
-      strcpy( newPuzzleFile, arg );              // Copy arg into memory
-      puzzleFiles.push_back( newPuzzleFile );    // Add to vector
-      result->numPuzzleFiles++;                  // Increment count
+      newPuzzleFile = new char[strlen( arg ) + 1 ];   // Allocate new memory
+      strcpy( newPuzzleFile, arg );                   // Copy arg into memory
+      puzzleFiles.push_back( newPuzzleFile );         // Add to vector
+      result->numPuzzleFiles++;                       // Increment count
 
     }
 
