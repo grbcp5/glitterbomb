@@ -70,9 +70,9 @@ public:
 
     uint32 makeMove( Move &m, const bool showWork = false );
 
-    uint8 getDeviceType( Point p ) const;
+    uint8 getDeviceType( Point p, bool check = true ) const;
 
-    uint8 getDeviceType( uint32 r, uint32 c ) const;
+    uint8 getDeviceType( uint32 r, uint32 c, bool check = true ) const;
 
     uint8 **getCopyOfGrid() const;
 

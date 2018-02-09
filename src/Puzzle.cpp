@@ -262,11 +262,11 @@ uint32 Puzzle::makeMove( Move &m, const bool showWork ) {
  *   Returns device type of 0 if the point is out of range of the grid
  */
 
-uint8 Puzzle::getDeviceType( Point p ) const {
+uint8 Puzzle::getDeviceType( Point p, bool check ) const {
 
   /* Return no device if out of bounds */
-  if ( p.row < m_pool_height ||
-       p.row >= m_grid_height || p.col >= m_grid_width ) {
+  if ( check && ( p.row < m_pool_height ||
+       p.row >= m_grid_height || p.col >= m_grid_width ) ) {
     return Puzzle::NO_DEVICE;
   }
 
@@ -284,8 +284,8 @@ uint8 Puzzle::getDeviceType( Point p ) const {
  *   Returns device type of 0 if the point is out of range of the grid
  */
 
-uint8 Puzzle::getDeviceType( uint32 r, uint32 c ) const {
-  return getDeviceType( Point( r, c ));
+uint8 Puzzle::getDeviceType( uint32 r, uint32 c, bool check ) const {
+  return getDeviceType( Point( r, c ), check );
 }
 
 
@@ -313,7 +313,7 @@ uint8 **Puzzle::getCopyOfGrid() const {
  */
 
 uint8 Puzzle::getReplacement( const uint32 x, const uint32 devRepl ) {
-  return ( uint8 ) ((( getDeviceType( 1, x ) + x + devRepl ) %
+  return ( uint8 ) ((( getDeviceType( 1, x, false ) + x + devRepl ) %
                      m_num_device_types ) + 1 );
 }
 
