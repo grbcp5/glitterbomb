@@ -34,6 +34,9 @@ private:
     const Move *m_action;
 
 public:
+
+    uint32 m_depth;
+
     std::vector< SearchNode * > m_children;
 
     SearchNode();
@@ -42,10 +45,19 @@ public:
 
     SearchNode( const SearchNode *parent, const Move *action );
 
+    SearchNode( const SearchNode *parent, const Move *action, uint32 depth );
+
     SearchNode(
         const Puzzle *initialState,
         const SearchNode *parent,
         const Move *action
+    );
+
+    SearchNode(
+        const Puzzle *initialState,
+        const SearchNode *parent,
+        const Move *action,
+        const uint32 depth
     );
 
     SearchNode( const SearchNode &cpy );

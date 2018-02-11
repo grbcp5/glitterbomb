@@ -40,14 +40,16 @@ SearchNode::SearchNode()
     : m_initialState( NULL ),
       m_parent( NULL ),
       m_action( NULL ),
-      m_children() {}
+      m_children(),
+      m_depth( 0 ) {}
 
 
 SearchNode::SearchNode( const Puzzle *initialState )
     : m_initialState( NULL ),
       m_parent( NULL ),
       m_action( NULL ),
-      m_children() {
+      m_children(),
+      m_depth( 0 ) {
 
   initialState == NULL ? NULL :
       m_initialState = new Puzzle( *( initialState ));
@@ -56,9 +58,22 @@ SearchNode::SearchNode( const Puzzle *initialState )
 
 SearchNode::SearchNode( const SearchNode *parent, const Move *action )
     : m_initialState( NULL ),
-      m_children() {
+      m_parent( parent ),
+      m_children(),
+      m_depth( 0 ) {
 
-  m_parent = parent;
+  m_action = action == NULL ? NULL : new Move( *( action ));
+
+}
+
+
+SearchNode::SearchNode( const SearchNode *parent, const Move *action,
+                        uint32 depth )
+    : m_initialState( NULL),
+      m_parent( parent ),
+      m_children(),
+      m_depth( depth ) {
+
   m_action = action == NULL ? NULL : new Move( *( action ));
 
 }
@@ -67,11 +82,25 @@ SearchNode::SearchNode( const SearchNode *parent, const Move *action )
 SearchNode::SearchNode(
     const Puzzle *initialState,
     const SearchNode *parent,
-    const Move *action ) {
+    const Move *action ) :
+    m_depth( 0 ) {
 
 
   m_initialState = initialState;
   m_parent = parent;
+  m_action = action == NULL ? NULL : new Move( *( action ));
+
+}
+
+
+SearchNode::SearchNode( const Puzzle *initialState, const SearchNode *parent,
+                        const Move *action, const uint32 depth ) :
+  m_initialState( NULL ),
+  m_parent( parent ),
+  m_action( NULL ),
+  m_children(),
+  m_depth( depth ) {
+
   m_action = action == NULL ? NULL : new Move( *( action ));
 
 }
