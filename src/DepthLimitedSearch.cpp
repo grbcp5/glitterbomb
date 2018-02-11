@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * File:
- *   ID_DepthFirstSearch
+ *   DepthLimitedSearch
  *
  * Author:
  *   Grant Broadwater

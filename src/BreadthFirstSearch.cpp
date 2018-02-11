@@ -19,7 +19,7 @@
 using namespace std;
 
 
-`/* Function:
+/* Function:
  *   search
  * Description:
  *   Does breadth first search to find a goal state
