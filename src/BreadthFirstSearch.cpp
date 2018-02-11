@@ -13,6 +13,7 @@
 
 #include "BreadthFirstSearch.h"
 #include "LegalMoveGenerator.h"
+#include "GlitterbombConstants.h"
 
 #include <queue>
 
@@ -36,7 +37,9 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
   SearchNode *initialState;
   SearchNode *curNode;
   SearchNode *child;
+#if DEBUG_OUTPUT
   uint32 nodesVisited( 0 );
+#endif
 
   /* Initialize */
   initialState = new SearchNode( puzzle );
@@ -50,11 +53,13 @@ PuzzleSolution *BreadthFirstSearch::search( Puzzle *puzzle ) const {
     frontier.pop();
     state = curNode->getState();
 
+#if DEBUG_OUTPUT
     nodesVisited++;
     if ( nodesVisited % 10000 == 0 ) {
       cout << "Nodes visited: " << nodesVisited << endl;
       cout << "\t" << "Current Node Depth: " << curNode->getPathCost() << endl;
     }
+#endif
 
     /* Check if goal state */
     if ( state->isSolved()) {

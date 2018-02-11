@@ -13,6 +13,7 @@
 
 #include "DepthLimitedSearch.h"
 #include "LegalMoveGenerator.h"
+#include "GlitterbombConstants.h"
 
 #include <vector>
 #include <stack>
@@ -34,7 +35,9 @@ PuzzleSolution *DepthLimitedSearch::search( Puzzle *puzzle ) const {
   SearchNode *initialState;
   SearchNode *curNode;
   SearchNode *child;
+#if DEBUG_OUTPUT
   uint32 nodesVisited( 0 );
+#endif
 
   /* Initialize */
   initialState = new SearchNode( puzzle );
@@ -48,10 +51,12 @@ PuzzleSolution *DepthLimitedSearch::search( Puzzle *puzzle ) const {
     frontier.pop();
     state = curNode->getState();
 
+#if DEBUG_OUTPUT
     nodesVisited++;
     if ( nodesVisited % 10000 == 0 ) {
       cout << "Visited " << nodesVisited << " nodes." << endl;
     }
+#endif
 
     /* Check if goal state */
     if ( state->isSolved()) {
