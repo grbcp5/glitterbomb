@@ -35,9 +35,16 @@ struct CmdArgs {
 
 /* Constants ******************************************************************/
 
-#define TEST_CMD_FLAG 1u
+#define ERR_CMD_FLAG 1u
+
+#define TEST_CMD_FLAG 2u
+
+#define BFS_CMD_FLAG 4u
+#define ID_DFS_CMD_FLAG 8u
+#define SEARCH_CMD_FLAGS ( BFS_CMD_FLAG | ID_DFS_CMD_FLAG )
 
 #define DEFAULT_PUZZLE_FILE_NAME "puzzle1.txt"
+#define DEFAULT_SEARCH_ALGORITHM ID_DFS_CMD_FLAG
 
 /* Function Declarations ******************************************************/
 

@@ -23,6 +23,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
   char *arg;
   bool argHandled;
   std::vector< char * > puzzleFiles;
+  size_t newPuzzleFileLength;
   char *newPuzzleFile;
 
   /* Loop over each argument */
@@ -52,20 +53,57 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
       }
     }
 
+    /* If search flag has not yet been set */
+    if ( !argHandled && !( result->flags & SEARCH_CMD_FLAGS)) {
+
+      /* Check for Breadth First Search */
+      if ( strcmp( arg, "--breadthfirstsearch" ) == 0 ||
+           strcmp( arg, "--bfs" ) == 0 ) {
+
+        /* Mark BFS Flag */
+        result->flags |= BFS_CMD_FLAG;
+        argHandled = true;
+
+        /* Check for Iterative Deepening Depth First Search */
+      } else if ( strcmp( arg, "--iterativedeepeningdepthfirstsearch" ) == 0 ||
+                  strcmp( arg, "--iddfs" ) == 0 ) {
+
+        result->flags |= ID_DFS_CMD_FLAG;
+        argHandled = true;
+      }
+    }
+
     /* Check if file has already been set */
     if ( !argHandled ) {
 
       /* Add it to list of puzzle files */
-      newPuzzleFile = new char[strlen( arg ) + 1 ];   // Allocate new memory
-      strcpy( newPuzzleFile, arg );                   // Copy arg into memory
-      puzzleFiles.push_back( newPuzzleFile );         // Add to vector
-      result->numPuzzleFiles++;                       // Increment count
+      newPuzzleFileLength = strlen( arg ) + 1;
+      newPuzzleFile = new char[newPuzzleFileLength]; // Allocate new memory
+      strcpy( newPuzzleFile, arg );                    // Copy arg into memory
 
+      /* Check to make sure not an argument */
+      if ( newPuzzleFileLength > 2 && newPuzzleFile[ 0 ] == '-'
+           && newPuzzleFile[ 0 ] == newPuzzleFile[ 1 ] ) {
+
+        result->flags |= ERR_CMD_FLAG;
+        delete[] newPuzzleFile;
+
+      } else {
+
+        puzzleFiles.push_back( newPuzzleFile ); // Add to vector
+        result->numPuzzleFiles++;               // Increment count
+
+      }
     }
 
     /* Deallocate dynamic memory */
     delete arg;
 
+  }
+
+  /* Check for at least one search algorithm */
+  if ( !( result->flags & SEARCH_CMD_FLAGS)) {
+    result->flags |= DEFAULT_SEARCH_ALGORITHM;
   }
 
   /* Copy all puzzle files */

@@ -2,10 +2,12 @@
 #include <fstream>
 #include <cstring>
 #include <cmd.h>
+#include <ctime>
 
 #include "ZTest.h"
 #include "LegalMoveGenerator.h"
 #include "BreadthFirstSearch.h"
+#include "DepthLimitedSearch.h"
 #include "cmd.h"
 #include "GlitterbombConstants.h"
 
@@ -81,7 +83,24 @@ int main( const int argc, const char **argv ) {
     puzzleFileStream.close();
 
     /* Initialize searcher */
-    searcher = new BreadthFirstSearch();
+    if ( cmdArgs->flags & BFS_CMD_FLAG ) {
+
+      /* Breadth First Search */
+      cout << "Using Breadth First Search algorithm." << endl;
+      searcher = new BreadthFirstSearch();
+
+    } else if ( cmdArgs->flags & ID_DFS_CMD_FLAG ) {
+
+      /* Iterative Deepening Depth First Search */
+      cout << "Using Iterative Deepening Depth First Search algorithm." << endl;
+      searcher = new DepthLimitedSearch( 6 );
+
+    } else {
+
+      /* Default */
+      cout << "Using Breadth First Search algorithm." << endl;
+      searcher = new BreadthFirstSearch();
+    }
 
     /* Execute search */
     cout << "Beginning search." << endl;
@@ -96,20 +115,25 @@ int main( const int argc, const char **argv ) {
 
 #if SHOW_STEPS
 
+      Puzzle *pcopy = new Puzzle( *p );
+
+      for( int i = 0; i < sol->numMovesToSolution; i++ ) {
+
         Move *m = new Move(
-            sol->moves[ 0 ]
+            sol->moves[ i ]
         );
 
         resultingPointsFromMove(
             p,
             m->from,
-            RIGHT,
+            sol->moves[ i ].from.col == sol->moves[ i ].to.col ? DOWN : RIGHT,
             m->matchedDevices
         );
 
-        Puzzle *pcopy = new Puzzle( *p );
         pcopy->makeMove( *m, true );
-        delete( pcopy );
+      }
+
+      delete ( pcopy );
 
 #endif
 
