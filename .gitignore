@@ -3,4 +3,3 @@ CMakeLists.txt
 *.xlsx
 bin/*
 build/*
-solution*.txt
