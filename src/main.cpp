@@ -7,13 +7,9 @@
 #include "LegalMoveGenerator.h"
 #include "BreadthFirstSearch.h"
 #include "cmd.h"
+#include "GlitterbombConstants.h"
 
 using namespace std;
-
-/* Constants ******************************************************************/
-
-
-
 
 /* Function Declarations ******************************************************/
 
@@ -97,6 +93,25 @@ int main( const int argc, const char **argv ) {
 
     /* If solution was found */
     if ( sol->solutionExists ) {
+
+#if SHOW_STEPS
+
+        Move *m = new Move(
+            sol->moves[ 0 ]
+        );
+
+        resultingPointsFromMove(
+            p,
+            m->from,
+            RIGHT,
+            m->matchedDevices
+        );
+
+        Puzzle *pcopy = new Puzzle( *p );
+        pcopy->makeMove( *m, true );
+        delete( pcopy );
+
+#endif
 
       /* Print solution to standard output */
       p->printFile();
