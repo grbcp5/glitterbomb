@@ -103,7 +103,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     }
 
     /* Deallocate dynamic memory */
-    delete arg;
+    delete[] arg;
 
   }
 
