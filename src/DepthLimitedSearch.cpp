@@ -50,8 +50,7 @@ PuzzleSolution *DepthLimitedSearch::search( Puzzle *puzzle ) const {
 
     nodesVisited++;
     if ( nodesVisited % 10000 == 0 ) {
-      cout << "Nodes visited: " << nodesVisited << endl;
-      cout << "\t" << "Current Node Depth: " << curNode->getPathCost() << endl;
+      cout << "Visited " << nodesVisited << " nodes." << endl;
     }
 
     /* Check if goal state */

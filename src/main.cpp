@@ -7,7 +7,7 @@
 #include "ZTest.h"
 #include "LegalMoveGenerator.h"
 #include "BreadthFirstSearch.h"
-#include "DepthLimitedSearch.h"
+#include "ID_DepthLimitedSearch.h"
 #include "cmd.h"
 #include "GlitterbombConstants.h"
 
@@ -95,7 +95,7 @@ int main( const int argc, const char **argv ) {
 
       /* Iterative Deepening Depth First Search */
       cout << "Using Iterative Deepening Depth First Search algorithm." << endl;
-      searcher = new DepthLimitedSearch( 6 );
+      searcher = new ID_DepthLimitedSearch();
 
     } else {
 

@@ -17,4 +17,6 @@
 /* Defines if debug info about solution is displayed */
 #define SHOW_STEPS false
 
+#define DEBUG_OUTPUT true
+
 #endif //GLITTERBOMB_GLITTERBOMBCONSTANTS_H
