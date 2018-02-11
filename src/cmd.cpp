@@ -15,6 +15,12 @@
 
 #include <cstring>
 
+const char *DEFAULT_PUZZLE_FILE_NAMES[] = {
+    "puzzle1.txt",
+    "puzzle2.txt"
+};
+const uint32 NUM_DEFAULT_PUZZLE_FILES = 2;
+
 CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
   /* Local variables */
@@ -106,25 +112,26 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     result->flags |= DEFAULT_SEARCH_ALGORITHM;
   }
 
-  /* Copy all puzzle files */
-  if ( result->numPuzzleFiles > 0 ) {
+  /* Put in default puzzle files */
+  if ( result->numPuzzleFiles == 0 ) {
 
-    result->puzzleFileNames = new const char *[result->numPuzzleFiles];
-    for ( int i = 0; i < puzzleFiles.size(); ++i ) {
-      result->puzzleFileNames[ i ] = puzzleFiles[ i ];
+    /* For each default puzzle file */
+    for ( int i = 0; i < NUM_DEFAULT_PUZZLE_FILES; ++i ) {
+
+      /* Create new memory */
+      newPuzzleFile = new char[strlen( DEFAULT_PUZZLE_FILE_NAMES[ i ] ) + 1];
+      strcpy( newPuzzleFile, DEFAULT_PUZZLE_FILE_NAMES[ i ] );
+
+      /* Add default to puzzle files */
+      result->numPuzzleFiles++;
+      puzzleFiles.push_back( newPuzzleFile );
     }
+  }
 
-  } else {
-
-    /* Create memory for default puzzle file */
-    newPuzzleFile = new char[strlen( DEFAULT_PUZZLE_FILE_NAME ) + 1];
-    strcpy( newPuzzleFile, DEFAULT_PUZZLE_FILE_NAME );
-
-    /* Add default to cmd args */
-    result->numPuzzleFiles = 1;
-    result->puzzleFileNames = new const char *[result->numPuzzleFiles];
-    result->puzzleFileNames[ 0 ] = newPuzzleFile;
-
+  /* Copy all puzzle files */
+  result->puzzleFileNames = new const char *[result->numPuzzleFiles];
+  for ( int i = 0; i < puzzleFiles.size(); ++i ) {
+    result->puzzleFileNames[ i ] = puzzleFiles[ i ];
   }
 
   return result;

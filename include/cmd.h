@@ -43,7 +43,10 @@ struct CmdArgs {
 #define ID_DFS_CMD_FLAG 8u
 #define SEARCH_CMD_FLAGS ( BFS_CMD_FLAG | ID_DFS_CMD_FLAG )
 
-#define DEFAULT_PUZZLE_FILE_NAME "puzzle1.txt"
+extern "C" {
+extern const char *DEFAULT_PUZZLE_FILE_NAME[];
+}
+
 #define DEFAULT_SEARCH_ALGORITHM ID_DFS_CMD_FLAG
 
 /* Function Declarations ******************************************************/
