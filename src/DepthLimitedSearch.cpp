@@ -54,11 +54,6 @@ PuzzleSolution *DepthLimitedSearch::search( Puzzle *puzzle ) const {
       cout << "\t" << "Current Node Depth: " << curNode->getPathCost() << endl;
     }
 
-    if ( curNode->getAction() != NULL && curNode->getAction()->from.row == 11
-         && curNode->getAction()->from.col == 2 ) {
-      curNode = curNode;
-    }
-
     /* Check if goal state */
     if ( state->isSolved()) {
       vector< Move > *sol = curNode->getAllActions();
