@@ -64,7 +64,7 @@ public:
     ~Puzzle();
 
     /* Member Functions *******************************************************/
-    void printFile() const;
+    void printFile( std::ostream &out = std::cout ) const;
 
     void swap( const Point from, const Point to );
 

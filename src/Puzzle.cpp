@@ -152,20 +152,20 @@ Puzzle::~Puzzle() {
  *   Prints the puzzle to standard output in file format
  */
 
-void Puzzle::printFile() const {
+void Puzzle::printFile( std::ostream &out ) const {
 
-  std::cout << m_quota << endl
-            << m_num_swaps << endl
-            << m_num_device_types << endl
-            << m_grid_width << endl
-            << m_grid_height << endl
-            << m_pool_height << endl;
+  out << m_quota << endl
+      << m_num_swaps << endl
+      << m_num_device_types << endl
+      << m_grid_width << endl
+      << m_grid_height << endl
+      << m_pool_height << endl;
 
   for ( uint32 r = 0; r < m_grid_height; r++ ) {
     for ( uint32 c = 0; c < m_grid_width; c++ ) {
-      cout << (( int ) m_grid[ r ][ c ] ) << " ";
+      out << (( int ) m_grid[ r ][ c ] ) << " ";
     }
-    cout << std::endl;
+    out << std::endl;
   }
 
 }
@@ -266,7 +266,7 @@ uint8 Puzzle::getDeviceType( Point p, bool check ) const {
 
   /* Return no device if out of bounds */
   if ( check && ( p.row < m_pool_height ||
-       p.row >= m_grid_height || p.col >= m_grid_width ) ) {
+                  p.row >= m_grid_height || p.col >= m_grid_width )) {
     return Puzzle::NO_DEVICE;
   }
 

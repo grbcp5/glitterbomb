@@ -35,6 +35,8 @@ int main( const int argc, const char **argv ) {
 
   /* Local Variables */
   ifstream puzzleFileStream;
+  ofstream solutionFileStream;
+  string solutionFileName;
   CmdArgs *cmdArgs;
   Searcher *searcher;
   Puzzle *p;
@@ -63,11 +65,11 @@ int main( const int argc, const char **argv ) {
   /* For each puzzle file */
   for ( int q = 0; q < cmdArgs->numPuzzleFiles; ++q ) {
 
-    cout << "\n\n----- Puzzle file " << ( q + 1 ) << " -----" << endl;
+    cout << "----- Puzzle file " << ( q + 1 ) << " -----" << endl;
 
     /* Get puzzle file */
     puzzleFileStream.open( cmdArgs->puzzleFileNames[ q ] );
-    cout << "Using " << cmdArgs->puzzleFileNames[ q ] << " as puzzle file."
+    cout << "Using \"" << cmdArgs->puzzleFileNames[ q ] << "\" as puzzle file."
          << endl;
 
     /* Check valid file */
@@ -108,7 +110,16 @@ int main( const int argc, const char **argv ) {
     PuzzleSolution *sol = searcher->search( p );
     clock_t end = clock();
     double elapsed_secs = double( end - begin ) / CLOCKS_PER_SEC;
-    cout << "Search completed.\n" << endl;
+    cout << "Search completed." << endl;
+
+    /* Construct output stream */
+    solutionFileName = string( "solution" ) +
+                       (( char ) ( '1' + ( char ) q )) +
+                       string( ".txt" );
+    cout << "Using \"" << solutionFileName << "\" as solution file." << endl;
+    solutionFileStream.open( solutionFileName.c_str());
+
+    cout << endl;
 
     /* If solution was found */
     if ( sol->solutionExists ) {
@@ -139,18 +150,26 @@ int main( const int argc, const char **argv ) {
 
       /* Print solution to standard output */
       p->printFile();
+      p->printFile( solutionFileStream );
       for ( uint32 i = 0; i < sol->numMovesToSolution; ++i ) {
         cout << sol->moves[ i ] << endl;
+        solutionFileStream << sol->moves[ i ] << endl;
       }
 
       /* Print elapsed time to standard output */
       cout << elapsed_secs << endl;
+      solutionFileStream << elapsed_secs << endl;
 
     } else {
 
       /* Indicate no solution found */
       cout << "Solution not found" << endl;
+      solutionFileStream << "Solution not found" << endl;
+
     }
+
+    cout << "\n\n" << endl;
+    solutionFileStream.close();
 
     /* Delete dynamic memory */
     delete p;
