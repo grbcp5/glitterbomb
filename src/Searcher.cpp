@@ -13,6 +13,31 @@
 
 #include "Searcher.h"
 
+
+/* Function:
+ *   deallocateAll
+ *
+ * Description:
+ *   Recursively deallocate search node and all its children
+ */
+
+void deallocateAll( SearchNode *&node ) {
+
+  /* Return if null pointer */
+  if ( node == NULL ) {
+    return;
+  }
+
+  /* Delete all children first */
+  for ( int i = 0; i < node->m_children.size(); ++i ) {
+    deallocateAll( node->m_children[ i ] );
+  }
+
+  /* Deallocate node */
+  delete node;
+  node = NULL;
+}
+
 /* Default Constructor */
 PuzzleSolution::PuzzleSolution()
     : solutionExists( false ),
@@ -95,11 +120,12 @@ SearchNode::SearchNode(
 
 SearchNode::SearchNode( const Puzzle *initialState, const SearchNode *parent,
                         const Move *action, const uint32 depth ) :
-  m_initialState( NULL ),
-  m_parent( parent ),
-  m_action( NULL ),
-  m_children(),
-  m_depth( depth ) {
+    m_initialState( initialState ),
+    m_parent( parent ),
+    m_action( NULL ),
+    m_children(),
+    m_depth( depth ) {
+
 
   m_action = action == NULL ? NULL : new Move( *( action ));
 
@@ -179,7 +205,7 @@ SearchNode *SearchNode::getParent() const {
 
 
 Move *SearchNode::getAction() const {
-  return new Move( *( m_action ));
+  return m_action == NULL ? NULL : new Move( *( m_action ));
 }
 
 

@@ -90,4 +90,6 @@ public:
 };
 
 
+void deallocateAll( SearchNode *&node );
+
 #endif //GLITTERBOMB_SEARCHER_H
