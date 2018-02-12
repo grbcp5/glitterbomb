@@ -86,13 +86,18 @@ public:
 
     bool isSolved() const;
 
+    bool operator==( const Puzzle &rhs ) const;
+
+    bool operator!=( const Puzzle &rhs ) const;
+
+
     /* Static Functions *******************************************************/
-    static Puzzle *construct(std::istream &in);
+    static Puzzle *construct( std::istream &in );
 
     static Puzzle *construct( const char *fileName );
 
     /* Friend functions *******************************************************/
-    friend std::ostream &operator<<(std::ostream &out, const Puzzle &p);
+    friend std::ostream &operator<<( std::ostream &out, const Puzzle &p );
 };
 
 /* Function Declarations ******************************************************/

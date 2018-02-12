@@ -517,6 +517,34 @@ std::ostream &operator<<( std::ostream &out, const Puzzle &p ) {
   return out;
 }
 
+bool Puzzle::operator==( const Puzzle &rhs ) const {
+  bool r = m_score == rhs.m_score &&
+           m_swaps_used == rhs.m_swaps_used &&
+           m_quota == rhs.m_quota &&
+           m_num_swaps == rhs.m_num_swaps &&
+           m_num_device_types == rhs.m_num_device_types &&
+           m_grid_width == rhs.m_grid_width &&
+           m_grid_height == rhs.m_grid_height &&
+           m_pool_height == rhs.m_pool_height &&
+           m_bonus_rules == rhs.m_bonus_rules;
+
+  if( r ) {
+    for ( int row = 0; row < m_grid_height; ++row ) {
+      for ( int col = 0; col < m_grid_width; ++col ) {
+        if( m_grid[ row ][ col ] != rhs.m_grid[ row ][ col ] ) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+bool Puzzle::operator!=( const Puzzle &rhs ) const {
+  return !( rhs == *this );
+}
+
 
 /* Function:
  *   swap
