@@ -519,22 +519,30 @@ std::ostream &operator<<( std::ostream &out, const Puzzle &p ) {
 }
 
 bool Puzzle::operator==( const Puzzle &rhs ) const {
-  bool r = m_score == rhs.m_score &&
-           m_swaps_used == rhs.m_swaps_used &&
-           m_quota == rhs.m_quota &&
-           m_num_swaps == rhs.m_num_swaps &&
-           m_num_device_types == rhs.m_num_device_types &&
-           m_grid_width == rhs.m_grid_width &&
-           m_grid_height == rhs.m_grid_height &&
-           m_pool_height == rhs.m_pool_height &&
-           m_bonus_rules == rhs.m_bonus_rules;
 
-  if( r ) {
-    for ( int row = 0; row < m_grid_height; ++row ) {
-      for ( int col = 0; col < m_grid_width; ++col ) {
-        if( m_grid[ row ][ col ] != rhs.m_grid[ row ][ col ] ) {
-          return false;
-        }
+  /* The variable m_swaps_used should not be considered when determining
+   * if puzzles are equal. Since m_swaps_used is not taken into
+   * account in the replacement algorithm, it has no effect on any future
+   * states of the board. However if m_swaps_used differs
+   * between two puzzle instances, that determines which instance reached that
+   * state in less moves (i.e. the path cost is less). So if two identical
+   * puzzles with different m_swaps_used values were considered not equal,
+   * then Graph Search algorithms could explore the same state multiple times,
+   * just each state with a different path cost.
+   *
+   * However the score is different. If two identical puzzles have different
+   * scores, that means these puzzles are two different states, where they just
+   * both happened to have generated the same devices in the same positions.
+   */
+
+  if ( m_score != rhs.m_score ) {
+    return false;
+  }
+
+  for ( int row = 0; row < m_grid_height; ++row ) {
+    for ( int col = 0; col < m_grid_width; ++col ) {
+      if ( m_grid[ row ][ col ] != rhs.m_grid[ row ][ col ] ) {
+        return false;
       }
     }
   }
