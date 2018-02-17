@@ -35,19 +35,33 @@ struct CmdArgs {
 
 /* Constants ******************************************************************/
 
-#define ERR_CMD_FLAG 1u
+#define ERR_CMD_FLAG (1u << 0)
 
-#define TEST_CMD_FLAG 2u
+#define TEST_CMD_FLAG (1u << 1)
 
-#define BFS_CMD_FLAG 4u
-#define ID_DFS_CMD_FLAG 8u
-#define SEARCH_CMD_FLAGS ( BFS_CMD_FLAG | ID_DFS_CMD_FLAG )
+#define BFS_CMD_FLAG (1u << 2)
+#define ID_DFS_CMD_FLAG (1u << 3)
+#define GBFGS_CMD_FLAG (1u << 4)
+#define ASGS_CMD_FLAG (1u << 5)
+#define SEARCH_CMD_FLAGS ( \
+  BFS_CMD_FLAG \
+  | ID_DFS_CMD_FLAG \
+  | GBFGS_CMD_FLAG \
+  | ASGS_CMD_FLAG \
+)
 
 extern "C" {
 extern const char *DEFAULT_PUZZLE_FILE_NAME[];
 }
 
 #define DEFAULT_SEARCH_ALGORITHM ID_DFS_CMD_FLAG
+
+
+#define TEST_ARG "--test"
+#define BFS_ARG_FULL "--breadthfirstsearch"
+#define BFS_ARG_SHORT "--bfs"
+#define IDDFS_ARG_FULL "--iterativedeepeningdepthfirstsearch"
+#define IDDFS_ARG_SHORT "--iddfs"
 
 /* Function Declarations ******************************************************/
 

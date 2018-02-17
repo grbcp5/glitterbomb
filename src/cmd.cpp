@@ -19,6 +19,7 @@ const char *DEFAULT_PUZZLE_FILE_NAMES[] = {
     "puzzle1.txt",
     "puzzle2.txt"
 };
+
 const uint32 NUM_DEFAULT_PUZZLE_FILES = 2;
 
 CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
@@ -49,7 +50,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     if ( !( result->flags & TEST_CMD_FLAG )) {
 
       /* Check if arg equals test arg */
-      if ( strcmp( arg, "--test" ) == 0 ) {
+      if ( strcmp( arg, TEST_ARG ) == 0 ) {
 
         /* Mark test command line arg */
         result->flags |= TEST_CMD_FLAG;
@@ -63,16 +64,16 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     if ( !argHandled && !( result->flags & SEARCH_CMD_FLAGS)) {
 
       /* Check for Breadth First Search */
-      if ( strcmp( arg, "--breadthfirstsearch" ) == 0 ||
-           strcmp( arg, "--bfs" ) == 0 ) {
+      if ( strcmp( arg, BFS_ARG_FULL ) == 0 ||
+           strcmp( arg, BFS_ARG_SHORT ) == 0 ) {
 
         /* Mark BFS Flag */
         result->flags |= BFS_CMD_FLAG;
         argHandled = true;
 
         /* Check for Iterative Deepening Depth First Search */
-      } else if ( strcmp( arg, "--iterativedeepeningdepthfirstsearch" ) == 0 ||
-                  strcmp( arg, "--iddfs" ) == 0 ) {
+      } else if ( strcmp( arg, IDDFS_ARG_FULL ) == 0 ||
+                  strcmp( arg, IDDFS_ARG_SHORT ) == 0 ) {
 
         result->flags |= ID_DFS_CMD_FLAG;
         argHandled = true;
