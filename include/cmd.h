@@ -5,6 +5,7 @@
 #ifndef GLITTERBOMB_CMD_H
 #define GLITTERBOMB_CMD_H
 
+#include <iostream>
 #include <vector>
 
 #include "types.h"
@@ -50,14 +51,21 @@ struct CmdArgs {
   | ASGS_CMD_FLAG \
 )
 
+#define BFS_NAME "Breadth First Search"
+#define ID_DFS_NAME "Iterative Deepening Depth First Search"
+#define GBFGS_NAME "Greedy Best First Graph Search"
+#define ASGS_NAME "A* Graph Search"
+
 extern "C" {
-extern const char *DEFAULT_PUZZLE_FILE_NAME[];
+extern const char *DEFAULT_PUZZLE_FILE_NAMES[];
 }
 
 #define DEFAULT_SEARCH_ALGORITHM ID_DFS_CMD_FLAG
 
+#define SHOW_DEFAULTS_CMD_FLAG (1u << 6)
 
 #define TEST_ARG "--test"
+#define SHOW_DEFAULTS_ARG "--showdefaults"
 #define BFS_ARG_FULL "--breadthfirstsearch"
 #define BFS_ARG_SHORT "--bfs"
 #define IDDFS_ARG_FULL "--iterativedeepeningdepthfirstsearch"
@@ -66,5 +74,7 @@ extern const char *DEFAULT_PUZZLE_FILE_NAME[];
 /* Function Declarations ******************************************************/
 
 CmdArgs *getCommandLineArguments( const int argc, const char **argv );
+
+std::ostream &showDefaultsArguments( std::ostream &out = std::cout );
 
 #endif //GLITTERBOMB_CMD_H

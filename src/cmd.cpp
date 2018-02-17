@@ -47,7 +47,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     }
 
     /* If test flag not already set */
-    if ( !( result->flags & TEST_CMD_FLAG )) {
+    if ( !( result->flags & TEST_CMD_FLAG)) {
 
       /* Check if arg equals test arg */
       if ( strcmp( arg, TEST_ARG ) == 0 ) {
@@ -58,6 +58,19 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
         /* Mark arg already handled */
         argHandled = true;
       }
+    }
+
+    /* Handle show defaults flag */
+    if ( !argHandled && !( result->flags & SHOW_DEFAULTS_CMD_FLAG)) {
+
+      /* Check for flag */
+      if ( strcmp( arg, SHOW_DEFAULTS_ARG ) == 0 ) {
+
+        /* Mark flag */
+        result->flags |= SHOW_DEFAULTS_CMD_FLAG;
+        argHandled = true;
+      }
+
     }
 
     /* If search flag has not yet been set */
@@ -137,3 +150,28 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
   return result;
 }
+
+std::ostream &showDefaultsArguments( std::ostream &out ) {
+
+  /* Show default search algorithm */
+  out << "Default Search Algorithm:\n\t";
+
+  if ( DEFAULT_SEARCH_ALGORITHM & BFS_CMD_FLAG) {
+    out << BFS_NAME << std::endl;
+  } else if ( DEFAULT_SEARCH_ALGORITHM & ID_DFS_CMD_FLAG) {
+    out << ID_DFS_NAME << std::endl;
+  } else if ( DEFAULT_SEARCH_ALGORITHM & GBFGS_CMD_FLAG) {
+    out << GBFGS_NAME << std::endl;
+  } else if ( DEFAULT_SEARCH_ALGORITHM & ASGS_CMD_FLAG) {
+    out << ASGS_NAME << std::endl;
+  }
+
+  /* Show Puzzle Files */
+  out << "Default Puzzle Files:\n";
+  for ( int i = 0; i < NUM_DEFAULT_PUZZLE_FILES; ++i ) {
+    out << "\t" << DEFAULT_PUZZLE_FILE_NAMES[ i ] << std::endl;
+  }
+
+  return out;
+}
+

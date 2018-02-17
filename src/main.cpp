@@ -62,6 +62,15 @@ int main( const int argc, const char **argv ) {
     return ZTest::executeAllTests();
   }
 
+  /* Branch for show defaults */
+  if ( cmdArgs->flags & SHOW_DEFAULTS_CMD_FLAG) {
+
+    showDefaultsArguments();
+
+    delete cmdArgs;
+    return 0;
+  }
+
   /* For each puzzle file */
   for ( int q = 0; q < cmdArgs->numPuzzleFiles; ++q ) {
 
@@ -88,13 +97,13 @@ int main( const int argc, const char **argv ) {
     if ( cmdArgs->flags & BFS_CMD_FLAG ) {
 
       /* Breadth First Search */
-      cout << "Using Breadth First Search algorithm." << endl;
+      cout << "Using " << BFS_NAME << " algorithm." << endl;
       searcher = new BreadthFirstSearch();
 
     } else if ( cmdArgs->flags & ID_DFS_CMD_FLAG ) {
 
       /* Iterative Deepening Depth First Search */
-      cout << "Using Iterative Deepening Depth First Search algorithm." << endl;
+      cout << "Using " << ID_DFS_NAME << " algorithm." << endl;
       searcher = new ID_DepthLimitedSearch();
 
     } else {
