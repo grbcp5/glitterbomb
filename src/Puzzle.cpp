@@ -159,7 +159,8 @@ void Puzzle::printFile( std::ostream &out ) const {
       << m_num_device_types << endl
       << m_grid_width << endl
       << m_grid_height << endl
-      << m_pool_height << endl;
+      << m_pool_height << endl
+      << m_bonus_rules << endl;
 
   for ( uint32 r = 0; r < m_grid_height; r++ ) {
     for ( uint32 c = 0; c < m_grid_width; c++ ) {
