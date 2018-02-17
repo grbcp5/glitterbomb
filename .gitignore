@@ -1,0 +1,6 @@
+.idea/
+CMakeLists.txt
+*.xlsx
+bin/*
+build/*
+cmake-build-debug/*
