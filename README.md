@@ -55,7 +55,7 @@ algorithms are supported:
 ```
 
 Along with the search algorithm, you can provide a puzzle file to search. The 
-puzzle file format can be seen in the[assignment description](http://web.mst.edu/~tauritzd/courses/cs5400/sp2018/puzzle.html).
+puzzle file format can be seen in the [assignment description](http://web.mst.edu/~tauritzd/courses/cs5400/sp2018/puzzle.html).
 To provide a puzzle file simply include the path to the puzzle file. You can
 provide as many puzzles as you want to search, the search will happen 
 sequentially beginning with the first puzzle provided and ending with the last.
@@ -71,7 +71,7 @@ files.
 ./bin/glitterbomb --bfs puzzle1.txt puzzles/puzzle2.txt
 ```
 
-###### Note
+###### Note:
 
 Currently only one search algorithm is supported, and if multiple puzzle files 
 are provided, that algorithm will be used for all puzzle files. To apply 
