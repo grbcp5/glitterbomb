@@ -17,10 +17,11 @@
 
 const char *DEFAULT_PUZZLE_FILE_NAMES[] = {
     "puzzle1.txt",
-    "puzzle2.txt"
+    "puzzle2.txt",
+    "puzzle3.txt"
 };
 
-const uint32 NUM_DEFAULT_PUZZLE_FILES = 2;
+const uint32 NUM_DEFAULT_PUZZLE_FILES = 3;
 
 CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 

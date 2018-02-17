@@ -8,6 +8,7 @@
 #include "LegalMoveGenerator.h"
 #include "BreadthFirstSearch.h"
 #include "ID_DepthLimitedSearch.h"
+#include "GreedyBestFirstGraphSearch.h"
 #include "cmd.h"
 #include "GlitterbombConstants.h"
 
@@ -105,6 +106,11 @@ int main( const int argc, const char **argv ) {
       /* Iterative Deepening Depth First Search */
       cout << "Using " << ID_DFS_NAME << " algorithm." << endl;
       searcher = new ID_DepthLimitedSearch();
+
+    } else if ( cmdArgs->flags & GBFGS_CMD_FLAG) {
+
+      cout << "Using " << GBFGS_NAME << " algorithm." << endl;
+      searcher = new GreedyBestFirstGraphSearch();
 
     } else {
 
