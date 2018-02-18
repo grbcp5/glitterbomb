@@ -59,6 +59,8 @@ int main( const int argc, const char **argv ) {
     cout << "Error reading in the command line arguments." << endl;
     cout << "Use ./glitterbomb --help for help on using glitterbomb." << endl;
 
+    delete cmdArgs;
+
     cout << "\nGlitterbomb terminating." << endl;
     printLine();
     return 0;
@@ -68,6 +70,8 @@ int main( const int argc, const char **argv ) {
   if ( cmdArgs->flags & SHOW_HELP_CMD_FLAG) {
 
     displayHelp();
+
+    delete cmdArgs;
 
     cout << "\nGlitterbomb terminating." << endl;
     printLine();
