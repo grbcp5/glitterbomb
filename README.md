@@ -41,6 +41,8 @@ process
 ./bin/gitterbomb
 ```
 
+##### Search Algorithm
+
 You can provide an argument with with search algorithm to use. If multiple 
 search algorithms are included, the first will be used. The following search
 algorithms are supported:
@@ -54,21 +56,36 @@ algorithms are supported:
 ./bin/glitterbomb --breadthFirstSearch
 ```
 
-Along with the search algorithm, you can provide a puzzle file to search. The 
-puzzle file format can be seen in the [assignment description](http://web.mst.edu/~tauritzd/courses/cs5400/sp2018/puzzle.html).
-To provide a puzzle file simply include the path to the puzzle file. You can
-provide as many puzzles as you want to search, the search will happen 
-sequentially beginning with the first puzzle provided and ending with the last.
+##### Puzzle Files
+
+You can provide a puzzle file to search. The puzzle file format can be seen in 
+the [assignment description](http://web.mst.edu/~tauritzd/courses/cs5400/sp2018/puzzle.html). 
+To provide a puzzle use the `-p` argument followed by a list of puzzle files
+you wish to search on. You can provide as many puzzles as you want to search, 
+the search will happen sequentially beginning with the first puzzle provided 
+and ending with the last.
 
 ```
-./bin/glitterbomb puzzle1.txt ./puzzles/special/puzzle.txt
+./bin/glitterbomb -p puzzle1.txt ./puzzles/special/puzzle.txt
+```
+
+##### Solution Files
+
+You can provide the files to output the solution to. simply provide the `-s`
+argument followed by the list of solution files. If no solution files are 
+provided, the default is to assume solution1.txt, solution2.txt, ext. If 
+any solution files are provided, there must be exactly as many solution files
+as there are puzzle files. 
+
+```
+./bin/glitterbomb -p -puzzle1.txt puzzle2.txt -s sol1.txt sol2.txt
 ```
 
 These arguments can be used together to specify a search algorithm and puzzle
 files.
 
 ```
-./bin/glitterbomb --bfs puzzle1.txt puzzles/puzzle2.txt
+./bin/glitterbomb --bfs -p p1.txt puzzles/p2.txt -s sol1.txt sols/sol2.txt
 ```
 
 ###### Note:
