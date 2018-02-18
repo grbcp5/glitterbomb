@@ -79,7 +79,7 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
   SearchNode *child;
   f_function *heuristic = new GreedyBestFirstHeuristic1();
   MinHeapComparator comp( heuristic );
-#if DEBUG_OUTPUT
+#if DEBUG_OUTPUT || COUNT_TOTAL_NODES_EXPANDED
   uint32 nodesVisited( 0 );
 #endif
 
@@ -103,6 +103,8 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
       cout << "Nodes visited: " << nodesVisited << endl;
       cout << "\t" << "Current Node Depth: " << curNode->getPathCost() << endl;
     }
+#elif COUNT_TOTAL_NODES_EXPANDED
+    nodesVisited++;
 #endif
 
     /* Check if goal state */
@@ -126,6 +128,11 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
 
       /* Deallocate search tree */
       deallocateAll( initialState );
+
+#if COUNT_TOTAL_NODES_EXPANDED
+      cout << "Total Nodes Expanded: " << nodesVisited << endl;
+      cout << "Solution Depth: " << result->numMovesToSolution << endl;
+#endif
 
       return result;
     }
@@ -181,6 +188,11 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
   /* Deallocate search tree */
   deallocateAll( initialState );
   delete heuristic;
+
+#if COUNT_TOTAL_NODES_EXPANDED
+  cout << "Total Nodes Expanded: " << nodesVisited << endl;
+  cout << "Solution Not found." << endl;
+#endif
 
   result->solutionExists = false;
   return result;
