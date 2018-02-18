@@ -81,7 +81,7 @@ int main( const int argc, const char **argv ) {
   }
 
   /* For each puzzle file */
-  for ( int q = 0; q < cmdArgs->numPuzzleFiles; ++q ) {
+  for ( int q = 0; q < cmdArgs->numFiles; ++q ) {
 
     cout << "----- Puzzle file " << ( q + 1 ) << " -----" << endl;
 
@@ -136,9 +136,7 @@ int main( const int argc, const char **argv ) {
     cout << "Search completed." << endl;
 
     /* Construct output stream */
-    solutionFileName = string( "solution" ) +
-                       (( char ) ( '1' + ( char ) q )) +
-                       string( ".txt" );
+    solutionFileName = string( cmdArgs->solutionFileNames[ q ] );
     cout << "Using \"" << solutionFileName << "\" as solution file." << endl;
     solutionFileStream.open( solutionFileName.c_str());
 

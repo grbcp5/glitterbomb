@@ -31,8 +31,11 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
   char *arg;
   bool argHandled;
   std::vector< char * > puzzleFiles;
+  std::vector< char * > solutionFiles;
   size_t newPuzzleFileLength;
   char *newPuzzleFile;
+  char *newSolutionFile;
+  std::string solutionFileName;
   bool inPuzzleFileList = false;
 
   /* Loop over each argument */
@@ -135,7 +138,6 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
         } else {
 
           puzzleFiles.push_back( newPuzzleFile ); // Add to vector
-          result->numPuzzleFiles++;               // Increment count
 
         }
 
@@ -157,7 +159,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
   }
 
   /* Put in default puzzle files */
-  if ( result->numPuzzleFiles == 0 ) {
+  if ( puzzleFiles.empty()) {
 
     /* For each default puzzle file */
     for ( int i = 0; i < NUM_DEFAULT_PUZZLE_FILES; ++i ) {
@@ -167,15 +169,38 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
       strcpy( newPuzzleFile, DEFAULT_PUZZLE_FILE_NAMES[ i ] );
 
       /* Add default to puzzle files */
-      result->numPuzzleFiles++;
       puzzleFiles.push_back( newPuzzleFile );
     }
   }
 
-  /* Copy all puzzle files */
-  result->puzzleFileNames = new const char *[result->numPuzzleFiles];
+  /* Use default solution files */
+  if ( solutionFiles.empty()) {
+
+    /* For each default puzzle file */
+    for ( int i = 0; i < puzzleFiles.size(); ++i ) {
+
+      /* Create new memory */
+      newSolutionFile = new char[strlen( "solution***.txt" ) + 1];
+      solutionFileName = std::string( "solution" ) +
+                         (( char ) ( '1' + ( char ) i )) +
+                         std::string( ".txt" );
+      strcpy( newSolutionFile, solutionFileName.c_str());
+
+      /* Add default to puzzle files */
+      solutionFiles.push_back( newSolutionFile );
+    }
+  } else if ( solutionFiles.size() != puzzleFiles.size()) {
+    result->flags |= ERR_CMD_FLAG;
+    return result;
+  }
+
+  /* Copy all puzzle and solution files */
+  result->puzzleFileNames = new const char *[puzzleFiles.size()];
+  result->solutionFileNames = new const char *[solutionFiles.size()];
   for ( int i = 0; i < puzzleFiles.size(); ++i ) {
     result->puzzleFileNames[ i ] = puzzleFiles[ i ];
+    result->solutionFileNames[ i ] = solutionFiles[ i ];
+    result->numFiles++;
   }
 
   return result;

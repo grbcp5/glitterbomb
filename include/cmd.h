@@ -14,22 +14,26 @@
 
 struct CmdArgs {
     uint32 flags;
-    uint32 numPuzzleFiles;
+    uint32 numFiles;
     const char **puzzleFileNames;
+    const char **solutionFileNames;
 
     CmdArgs() :
         flags( 0 ),
-        numPuzzleFiles( 0 ),
-        puzzleFileNames( NULL ) {}
+        numFiles( 0 ),
+        puzzleFileNames( NULL ),
+        solutionFileNames( NULL ) {}
 
     ~CmdArgs() {
       if ( puzzleFileNames != NULL ) {
 
-        for ( int i = 0; i < numPuzzleFiles; ++i ) {
+        for ( int i = 0; i < numFiles; ++i ) {
           delete[] puzzleFileNames[ i ];
+          delete[] solutionFileNames[ i ];
         }
 
         delete[] puzzleFileNames;
+        delete[] solutionFileNames;
       }
     }
 };
