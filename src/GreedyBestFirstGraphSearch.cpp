@@ -33,7 +33,7 @@ double GreedyBestFirstHeuristic2::operator()( const Puzzle &p ) const {
 SearchNode *GreedyBestFirstGraphSearch::findNodeWithPuzzle(
     const std::vector< SearchNode * > &nodes,
     Puzzle *p
-) {
+) const {
 
   for ( int i = 0; i < nodes.size(); ++i ) {
     if ( *( nodes[ i ]->getState()) == *p ) {
@@ -49,7 +49,7 @@ SearchNode *GreedyBestFirstGraphSearch::findNodeWithPuzzle(
 bool GreedyBestFirstGraphSearch::contains(
     const std::vector< SearchNode * > &nodes,
     Puzzle *p
-) {
+) const {
   return findNodeWithPuzzle( nodes, p ) != NULL;
 }
 
@@ -120,6 +120,9 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
       return result;
     }
 
+    /* Add this node to explored set */
+    explored_set.push_back( curNode );
+
     /* Generate children */
     children = getLegalMoves( state );
 
@@ -128,6 +131,18 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
 
       childState = new Puzzle( *( state ));
       childState->makeMove( *( children->at( i )));
+
+      /* If this state is already discovered */
+      if ( contains( frontier, childState )
+           || contains( explored_set, childState )) {
+
+        /* Delete dynamically allocated legal move */
+        delete ( children->at( i ));
+        delete childState;
+
+        /* Do not add this node to the frontier */
+        continue;
+      }
 
       /* Format new search node with child state */
       child = new SearchNode(
