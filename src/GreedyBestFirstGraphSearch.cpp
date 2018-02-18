@@ -130,8 +130,7 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
       deallocateAll( initialState );
 
 #if COUNT_TOTAL_NODES_EXPANDED
-      cout << "Total Nodes Expanded: " << nodesVisited << endl;
-      cout << "Solution Depth: " << result->numMovesToSolution << endl;
+      result->totalNodesExpanded = nodesVisited;
 #endif
 
       return result;
@@ -190,8 +189,7 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
   delete heuristic;
 
 #if COUNT_TOTAL_NODES_EXPANDED
-  cout << "Total Nodes Expanded: " << nodesVisited << endl;
-  cout << "Solution Not found." << endl;
+  result->totalNodesExpanded = nodesVisited;
 #endif
 
   result->solutionExists = false;

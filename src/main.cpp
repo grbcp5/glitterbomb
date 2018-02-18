@@ -183,6 +183,17 @@ int main( const int argc, const char **argv ) {
 
     }
 
+#if COUNT_TOTAL_NODES_EXPANDED
+    cout << "\nTotal Nodes Expanded: "
+         << sol->totalNodesExpanded << endl
+         << "Solution Depth: "
+         << sol->numMovesToSolution << endl << endl;
+    solutionFileStream << "\nTotal Nodes Expanded: "
+                       << sol->totalNodesExpanded << endl
+                       << "Solution Depth: "
+                       << sol->numMovesToSolution;
+#endif
+
     cout << "\n\n" << endl;
     solutionFileStream.close();
 

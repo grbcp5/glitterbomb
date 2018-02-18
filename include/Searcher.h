@@ -19,6 +19,9 @@ struct PuzzleSolution {
     const Puzzle *initialState;
     uint32 numMovesToSolution;
     Move *moves;
+#if COUNT_TOTAL_NODES_EXPANDED
+    uint32 totalNodesExpanded;
+#endif
 
     /* Default Constructor */
     PuzzleSolution();
