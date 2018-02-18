@@ -98,10 +98,19 @@ struct MinHeapComparator {
 
     bool operator()( const SearchNode *lhs, const SearchNode *rhs ) {
 
+      Puzzle *lhs_state = lhs->getState();
+      Puzzle *rhs_state = rhs->getState();
+      bool result;
+
       /* Use operator> instead of operator< to make min heap */
-      return (( *m_eval )( *( lhs->getState())))
-             >
-             (( *m_eval )( *( rhs->getState())));
+      result = m_eval->operator()( *lhs_state )
+               >
+               m_eval->operator()( *rhs_state );
+
+      delete lhs_state;
+      delete rhs_state;
+
+      return result;
     }
 };
 

@@ -14,6 +14,7 @@
 #include "ZTestLegalMoveGenerator.h"
 
 #include <iostream>
+#include <algorithm>
 
 #include "Puzzle.h"
 #include "LegalMoveGenerator.h"
