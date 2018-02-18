@@ -35,10 +35,20 @@ SearchNode *GreedyBestFirstGraphSearch::findNodeWithPuzzle(
     Puzzle *p
 ) const {
 
+  Puzzle *state;
+
   for ( int i = 0; i < nodes.size(); ++i ) {
-    if ( *( nodes[ i ]->getState()) == *p ) {
+
+    state = nodes[ i ]->getState();
+
+    if ( *state == *p ) {
+
+      delete state;
+
       return nodes[ i ];
     }
+
+    delete state;
   }
 
   return NULL;
