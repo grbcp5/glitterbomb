@@ -55,6 +55,14 @@ int main( const int argc, const char **argv ) {
   /* Get command line arguments */
   cmdArgs = getCommandLineArguments( argc, argv );
 
+  /* Error Reading in Args */
+  if ( cmdArgs->flags & ERR_CMD_FLAG) {
+    cout << "Error reading in the command line arguments." << endl;
+    cout << "Use ./glitterbomb --help for help on using glitterbomb." << endl;
+
+    return 0;
+  }
+
   /* Branch for testing procedure */
   if ( cmdArgs->flags & TEST_CMD_FLAG ) {
 

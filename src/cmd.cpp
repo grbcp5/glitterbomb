@@ -33,6 +33,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
   std::vector< char * > puzzleFiles;
   size_t newPuzzleFileLength;
   char *newPuzzleFile;
+  bool inPuzzleFileList = false;
 
   /* Loop over each argument */
   for ( uint32 i = 1; i < argc; ++i ) {
@@ -57,6 +58,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
         result->flags |= TEST_CMD_FLAG;
 
         /* Mark arg already handled */
+        inPuzzleFileList = false;
         argHandled = true;
       }
     }
@@ -69,6 +71,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
         /* Mark flag */
         result->flags |= SHOW_DEFAULTS_CMD_FLAG;
+        inPuzzleFileList = false;
         argHandled = true;
       }
 
@@ -83,6 +86,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
         /* Mark BFS Flag */
         result->flags |= BFS_CMD_FLAG;
+        inPuzzleFileList = false;
         argHandled = true;
 
         /* Check for Iterative Deepening Depth First Search */
@@ -90,6 +94,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
                   strcmp( arg, IDDFS_ARG_SHORT ) == 0 ) {
 
         result->flags |= ID_DFS_CMD_FLAG;
+        inPuzzleFileList = false;
         argHandled = true;
 
         /* Check for Greedy Best First Graph Search */
@@ -97,32 +102,48 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
                   strcmp( arg, GBFGS_ARG_SHORT ) == 0 ) {
 
         result->flags |= GBFGS_CMD_FLAG;
+        inPuzzleFileList = false;
         argHandled = true;
 
       }
     }
 
-    /* Check if file has already been set */
+    /* Check for start puzzle list arg */
+    if ( !argHandled && strcmp( arg, PUZZLE_LIST_ARG ) == 0 ) {
+
+      argHandled = true;
+      inPuzzleFileList = true;
+    }
+
     if ( !argHandled ) {
 
-      /* Add it to list of puzzle files */
-      newPuzzleFileLength = strlen( arg ) + 1;
-      newPuzzleFile = new char[newPuzzleFileLength]; // Allocate new memory
-      strcpy( newPuzzleFile, arg );                    // Copy arg into memory
+      /* Check if expecting puzzle file */
+      if ( inPuzzleFileList ) {
 
-      /* Check to make sure not an argument */
-      if ( newPuzzleFileLength > 2 && newPuzzleFile[ 0 ] == '-'
-           && newPuzzleFile[ 0 ] == newPuzzleFile[ 1 ] ) {
+        /* Add it to list of puzzle files */
+        newPuzzleFileLength = strlen( arg ) + 1;
+        newPuzzleFile = new char[newPuzzleFileLength]; // Allocate new memory
+        strcpy( newPuzzleFile, arg );                    // Copy arg into memory
 
-        result->flags |= ERR_CMD_FLAG;
-        delete[] newPuzzleFile;
+        /* Check to make sure not an argument */
+        if ( newPuzzleFileLength > 2 && newPuzzleFile[ 0 ] == '-'
+             && newPuzzleFile[ 0 ] == newPuzzleFile[ 1 ] ) {
 
+          result->flags |= ERR_CMD_FLAG;
+          delete[] newPuzzleFile;
+
+        } else {
+
+          puzzleFiles.push_back( newPuzzleFile ); // Add to vector
+          result->numPuzzleFiles++;               // Increment count
+
+        }
+
+        /* If not reading in list of strings */
       } else {
-
-        puzzleFiles.push_back( newPuzzleFile ); // Add to vector
-        result->numPuzzleFiles++;               // Increment count
-
+        result->flags |= ERR_CMD_FLAG;
       }
+
     }
 
     /* Deallocate dynamic memory */
