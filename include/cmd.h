@@ -69,6 +69,7 @@ extern const char *DEFAULT_PUZZLE_FILE_NAMES[];
 #define SHOW_DEFAULTS_CMD_FLAG (1u << 6)
 
 #define PUZZLE_LIST_ARG "-p"
+#define SOLUTION_LIST_ARG "-s"
 #define TEST_ARG "--test"
 #define SHOW_DEFAULTS_ARG "--showdefaults"
 #define BFS_ARG_FULL "--breadthfirstsearch"

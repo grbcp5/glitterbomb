@@ -32,11 +32,11 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
   bool argHandled;
   std::vector< char * > puzzleFiles;
   std::vector< char * > solutionFiles;
-  size_t newPuzzleFileLength;
-  char *newPuzzleFile;
-  char *newSolutionFile;
+  size_t newFileLength;
+  char *newFile;
   std::string solutionFileName;
   bool inPuzzleFileList = false;
+  bool inSolutionFileList = false;
 
   /* Loop over each argument */
   for ( uint32 i = 1; i < argc; ++i ) {
@@ -62,6 +62,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
         /* Mark arg already handled */
         inPuzzleFileList = false;
+        inSolutionFileList = false;
         argHandled = true;
       }
     }
@@ -75,6 +76,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
         /* Mark flag */
         result->flags |= SHOW_DEFAULTS_CMD_FLAG;
         inPuzzleFileList = false;
+        inSolutionFileList = false;
         argHandled = true;
       }
 
@@ -90,6 +92,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
         /* Mark BFS Flag */
         result->flags |= BFS_CMD_FLAG;
         inPuzzleFileList = false;
+        inSolutionFileList = false;
         argHandled = true;
 
         /* Check for Iterative Deepening Depth First Search */
@@ -98,6 +101,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
         result->flags |= ID_DFS_CMD_FLAG;
         inPuzzleFileList = false;
+        inSolutionFileList = false;
         argHandled = true;
 
         /* Check for Greedy Best First Graph Search */
@@ -106,6 +110,7 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
         result->flags |= GBFGS_CMD_FLAG;
         inPuzzleFileList = false;
+        inSolutionFileList = false;
         argHandled = true;
 
       }
@@ -116,6 +121,14 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
       argHandled = true;
       inPuzzleFileList = true;
+      inSolutionFileList = false;
+    }
+
+    if ( !argHandled && strcmp( arg, SOLUTION_LIST_ARG ) == 0 ) {
+
+      argHandled = true;
+      inPuzzleFileList = false;
+      inSolutionFileList = true;
     }
 
     if ( !argHandled ) {
@@ -124,26 +137,50 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
       if ( inPuzzleFileList ) {
 
         /* Add it to list of puzzle files */
-        newPuzzleFileLength = strlen( arg ) + 1;
-        newPuzzleFile = new char[newPuzzleFileLength]; // Allocate new memory
-        strcpy( newPuzzleFile, arg );                    // Copy arg into memory
+        newFileLength = strlen( arg ) + 1;
+        newFile = new char[newFileLength]; // Allocate new memory
+        strcpy( newFile, arg );                    // Copy arg into memory
 
         /* Check to make sure not an argument */
-        if ( newPuzzleFileLength > 2 && newPuzzleFile[ 0 ] == '-'
-             && newPuzzleFile[ 0 ] == newPuzzleFile[ 1 ] ) {
+        if ( newFileLength > 2 && newFile[ 0 ] == '-'
+             && newFile[ 0 ] == newFile[ 1 ] ) {
 
           result->flags |= ERR_CMD_FLAG;
-          delete[] newPuzzleFile;
+          delete[] newFile;
+          return result;
 
         } else {
 
-          puzzleFiles.push_back( newPuzzleFile ); // Add to vector
+          puzzleFiles.push_back( newFile ); // Add to vector
+
+        }
+
+        /* Check if expecting solution file */
+      } else if ( inSolutionFileList ) {
+
+        /* Add it to list of solution files */
+        newFileLength = strlen( arg ) + 1;
+        newFile = new char[newFileLength]; // Allocate new memory
+        strcpy( newFile, arg );            // Copy arg into memory
+
+        /* Check to make sure not an argument */
+        if ( newFileLength > 2 && newFile[ 0 ] == '-'
+             && newFile[ 0 ] == newFile[ 1 ] ) {
+
+          result->flags |= ERR_CMD_FLAG;
+          delete[] newFile;
+          return result;
+
+        } else {
+
+          solutionFiles.push_back( newFile ); // Add to vector
 
         }
 
         /* If not reading in list of strings */
       } else {
         result->flags |= ERR_CMD_FLAG;
+        return result;
       }
 
     }
@@ -165,11 +202,11 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     for ( int i = 0; i < NUM_DEFAULT_PUZZLE_FILES; ++i ) {
 
       /* Create new memory */
-      newPuzzleFile = new char[strlen( DEFAULT_PUZZLE_FILE_NAMES[ i ] ) + 1];
-      strcpy( newPuzzleFile, DEFAULT_PUZZLE_FILE_NAMES[ i ] );
+      newFile = new char[strlen( DEFAULT_PUZZLE_FILE_NAMES[ i ] ) + 1];
+      strcpy( newFile, DEFAULT_PUZZLE_FILE_NAMES[ i ] );
 
       /* Add default to puzzle files */
-      puzzleFiles.push_back( newPuzzleFile );
+      puzzleFiles.push_back( newFile );
     }
   }
 
@@ -180,14 +217,14 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
     for ( int i = 0; i < puzzleFiles.size(); ++i ) {
 
       /* Create new memory */
-      newSolutionFile = new char[strlen( "solution***.txt" ) + 1];
+      newFile = new char[strlen( "solution***.txt" ) + 1];
       solutionFileName = std::string( "solution" ) +
                          (( char ) ( '1' + ( char ) i )) +
                          std::string( ".txt" );
-      strcpy( newSolutionFile, solutionFileName.c_str());
+      strcpy( newFile, solutionFileName.c_str());
 
       /* Add default to puzzle files */
-      solutionFiles.push_back( newSolutionFile );
+      solutionFiles.push_back( newFile );
     }
   } else if ( solutionFiles.size() != puzzleFiles.size()) {
     result->flags |= ERR_CMD_FLAG;
