@@ -91,6 +91,14 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
 
         result->flags |= ID_DFS_CMD_FLAG;
         argHandled = true;
+
+        /* Check for Greedy Best First Graph Search */
+      } else if ( strcmp( arg, GBFGS_ARG_FULL ) == 0 ||
+                  strcmp( arg, GBFGS_ARG_SHORT ) == 0 ) {
+
+        result->flags |= GBFGS_CMD_FLAG;
+        argHandled = true;
+
       }
     }
 

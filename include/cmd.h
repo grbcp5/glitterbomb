@@ -70,6 +70,8 @@ extern const char *DEFAULT_PUZZLE_FILE_NAMES[];
 #define BFS_ARG_SHORT "--bfs"
 #define IDDFS_ARG_FULL "--iterativedeepeningdepthfirstsearch"
 #define IDDFS_ARG_SHORT "--iddfs"
+#define GBFGS_ARG_FULL "--greedybestfirstgraphsearch"
+#define GBFGS_ARG_SHORT "--gbfgs"
 
 /* Function Declarations ******************************************************/
 
