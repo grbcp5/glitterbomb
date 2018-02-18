@@ -17,8 +17,23 @@
 
 #include "Puzzle.h"
 #include "LegalMoveGenerator.h"
+#include "GreedyBestFirstGraphSearch.h"
 
 using namespace std;
+
+Puzzle *makePuzzle( const uint32 quota, const uint32 score ) {
+  Puzzle *p = new Puzzle(
+      quota,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+  );
+  p->m_score = score;
+  return p;
+}
 
 int ZTestLegalMoveGenerator::test( uint32 testID ) const {
 
@@ -94,6 +109,47 @@ int ZTestLegalMoveGenerator::test( uint32 testID ) const {
     delete ret_val;
 
   }
+
+  cout << "\n\n\n-- Test Heap--\n" << endl;
+
+  vector< SearchNode * > frontier;
+
+  frontier.push_back( new SearchNode( makePuzzle( 10, 4 ))); // 6 / 3 = 2
+  frontier.push_back( new SearchNode( makePuzzle( 10, 6 ))); // 4 / 3 = 1.33
+  frontier.push_back( new SearchNode( makePuzzle( 10, 3 ))); // 7 / 3 = 2.33
+  frontier.push_back( new SearchNode( makePuzzle( 10, 5 ))); // 5 / 3 = 1.66
+  frontier.push_back( new SearchNode( makePuzzle( 10, 1 )));
+  frontier.push_back( new SearchNode( makePuzzle( 10, 8 )));
+  frontier.push_back( new SearchNode( makePuzzle( 10, 9 ))); // 1 / 3 = 0.33
+  frontier.push_back( new SearchNode( makePuzzle( 10, 7 )));
+  frontier.push_back( new SearchNode( makePuzzle( 10, 0 ))); // 10 / 3 = 3.33
+  frontier.push_back( new SearchNode( makePuzzle( 10, 2 )));
+  f_function *heuristic = new GreedyBestFirstHeuristic1();
+  MinHeapComparator comp( heuristic );
+
+  make_heap( frontier.begin(), frontier.end(), comp );
+
+  for ( int i = 0; i < frontier.size(); i++ ) {
+    cout << ( i + 1 ) << ": " << frontier[ i ]->getState()->m_score << " ("
+         << (( *heuristic )( *( frontier[ i ]->getState()))) << ")" << endl;
+  }
+
+  for ( int j = 0; j < 8; ++j ) {
+
+    cout << "Current Heap Val: " << frontier[ 0 ]->getState()->m_score << endl;
+    pop_heap( frontier.begin(), frontier.end(), comp );
+    frontier.pop_back();
+    cout << "\nPop heap" << endl;
+
+    for ( int i = 0; i < frontier.size(); i++ ) {
+      cout << ( i + 1 ) << ": " << frontier[ i ]->getState()->m_score << " ("
+           << (( *heuristic )( *( frontier[ i ]->getState()))) << ")" << endl;
+    }
+
+    cout << "\n\n";
+  }
+
+  delete comp.m_eval;
 
   /* Return pass */
   return 0;

@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "GlitterbombConstants.h"
 #include "types.h"
 #include "Puzzle.h"
 
@@ -77,10 +78,34 @@ public:
     std::vector< Move > *getAllActions() const;
 };
 
+
+class f_function {
+public:
+    virtual double operator()( const Puzzle &p ) const = 0;
+
+    virtual ~f_function() {}
+};
+
+
+struct MinHeapComparator {
+
+    const f_function *const m_eval;
+
+    MinHeapComparator( const f_function *const eval )
+        : m_eval( eval ) {}
+
+    ~MinHeapComparator() {}
+
+    bool operator()( const SearchNode *lhs, const SearchNode *rhs ) {
+
+      /* Use operator> instead of operator< to make min heap */
+      return (( *m_eval )( *( lhs->getState())))
+             >
+             (( *m_eval )( *( rhs->getState())));
+    }
+};
+
 class Searcher {
-
-private:
-
 public:
 
     virtual PuzzleSolution *search( Puzzle *puzzle ) const = 0;
