@@ -124,11 +124,22 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
       inSolutionFileList = false;
     }
 
+
+    /* Check for start solution list arg */
     if ( !argHandled && strcmp( arg, SOLUTION_LIST_ARG ) == 0 ) {
 
       argHandled = true;
       inPuzzleFileList = false;
       inSolutionFileList = true;
+    }
+
+    /* Check for help flag */
+    if ( !argHandled && strcmp( arg, SHOW_HELP_ARG ) == 0 ) {
+
+      result->flags |= SHOW_HELP_CMD_FLAG;
+      argHandled = true;
+      inPuzzleFileList = false;
+      inSolutionFileList = false;
     }
 
     if ( !argHandled ) {
@@ -265,5 +276,44 @@ std::ostream &showDefaultsArguments( std::ostream &out ) {
   }
 
   return out;
+}
+
+void displayHelp() {
+
+  using namespace std;
+
+  cout << "Available Arguments:" << endl
+
+       << "\n\tFile Lists:" << endl
+       << "\t\t-p: Begin list of puzzle files." << endl
+       << "\t\t-s: Begin list of solution files." << endl
+       << "\n\tPuzzle and solution file lists must be equal length." << endl
+
+       << "\n\tSearch Algorithms:" << endl
+       << "\t\t--breadthFirstSearch (-bfs)." << endl
+       << "\t\t--iterativeDeepeningDepthFirstSearch (-iddfs)." << endl
+       << "\t\t--greedyBestFirstGraphSearch (-gbfgs)." << endl
+
+       << "\n\tOther Arguments" << endl
+       << "\t\t--test: Run test protocol." << endl
+       << "\t\t--help: Display this help message." << endl
+       << "\t\t--showDefaults: Show default values." << endl
+
+       << "\nExamples:"
+
+       << "\n\t./glitterbomb --bfs" << endl
+       << "\t\tRun breadth first search on all default puzzle files " << endl
+       << "\t\tand use the default solution files." << endl
+
+       << "\n\t./glitterbomb -p p1.txt p2.txt" << endl
+       << "\t\tRun the default search algorithm on \"p1.txt\" and \"p2.txt\""
+       << "\n\t\tand use the default solution files." << endl
+
+       << "\n\t./glitterbomb -p puzzle1.txt -s sol1.txt" << endl
+       << "\t\tRun the default search algorithm on \"puzzle1.txt\"" << endl
+       << "\t\tand output the solution to \"sol1.txt\"." << endl
+
+       << endl;
+
 }
 

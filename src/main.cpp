@@ -19,7 +19,6 @@ using namespace std;
 
 void printLine( const uint32 length = 80u, const char c = '*' );
 
-
 /**
  * Function:
  *   main
@@ -60,15 +59,31 @@ int main( const int argc, const char **argv ) {
     cout << "Error reading in the command line arguments." << endl;
     cout << "Use ./glitterbomb --help for help on using glitterbomb." << endl;
 
+    cout << "\nGlitterbomb terminating." << endl;
+    printLine();
+    return 0;
+  }
+
+  /* User requested help */
+  if ( cmdArgs->flags & SHOW_HELP_CMD_FLAG) {
+
+    displayHelp();
+
+    cout << "\nGlitterbomb terminating." << endl;
+    printLine();
     return 0;
   }
 
   /* Branch for testing procedure */
-  if ( cmdArgs->flags & TEST_CMD_FLAG ) {
+  if ( cmdArgs->flags & TEST_CMD_FLAG) {
+
+    int ret_val = ZTest::executeAllTests();
 
     delete cmdArgs;
 
-    return ZTest::executeAllTests();
+    cout << "\nGlitterbomb terminating." << endl;
+    printLine();
+    return ret_val;
   }
 
   /* Branch for show defaults */
@@ -77,6 +92,9 @@ int main( const int argc, const char **argv ) {
     showDefaultsArguments();
 
     delete cmdArgs;
+
+    cout << "\nGlitterbomb terminating." << endl;
+    printLine();
     return 0;
   }
 
@@ -103,13 +121,13 @@ int main( const int argc, const char **argv ) {
     puzzleFileStream.close();
 
     /* Initialize searcher */
-    if ( cmdArgs->flags & BFS_CMD_FLAG ) {
+    if ( cmdArgs->flags & BFS_CMD_FLAG) {
 
       /* Breadth First Search */
       cout << "Using " << BFS_NAME << " algorithm." << endl;
       searcher = new BreadthFirstSearch();
 
-    } else if ( cmdArgs->flags & ID_DFS_CMD_FLAG ) {
+    } else if ( cmdArgs->flags & ID_DFS_CMD_FLAG) {
 
       /* Iterative Deepening Depth First Search */
       cout << "Using " << ID_DFS_NAME << " algorithm." << endl;
@@ -212,6 +230,8 @@ int main( const int argc, const char **argv ) {
 
   delete cmdArgs;
 
+  cout << "\nGlitterbomb terminating." << endl;
+  printLine();
   return 0;
 }
 

@@ -67,11 +67,13 @@ extern const char *DEFAULT_PUZZLE_FILE_NAMES[];
 #define DEFAULT_SEARCH_ALGORITHM GBFGS_CMD_FLAG
 
 #define SHOW_DEFAULTS_CMD_FLAG (1u << 6)
+#define SHOW_HELP_CMD_FLAG (1u << 7)
 
 #define PUZZLE_LIST_ARG "-p"
 #define SOLUTION_LIST_ARG "-s"
 #define TEST_ARG "--test"
 #define SHOW_DEFAULTS_ARG "--showdefaults"
+#define SHOW_HELP_ARG "--help"
 #define BFS_ARG_FULL "--breadthfirstsearch"
 #define BFS_ARG_SHORT "--bfs"
 #define IDDFS_ARG_FULL "--iterativedeepeningdepthfirstsearch"
@@ -84,5 +86,7 @@ extern const char *DEFAULT_PUZZLE_FILE_NAMES[];
 CmdArgs *getCommandLineArguments( const int argc, const char **argv );
 
 std::ostream &showDefaultsArguments( std::ostream &out = std::cout );
+
+void displayHelp();
 
 #endif //GLITTERBOMB_CMD_H
