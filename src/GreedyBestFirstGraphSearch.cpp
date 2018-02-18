@@ -21,13 +21,16 @@ using namespace std;
 
 /* Heuristic function */
 double GreedyBestFirstHeuristic1::operator()( const Puzzle &p ) const {
-  return (( p.m_quota - p.m_score ) / 3.0 );
+  return (( p.m_quota - p.m_score ) / static_cast<double>(p.m_quota));
 }
 
 double GreedyBestFirstHeuristic2::operator()( const Puzzle &p ) const {
-  return (( p.m_quota - p.m_score ) / p.m_quota );
+  return 3.0 / ( p.m_score < 1u ? 1u : p.m_score );
 }
 
+double GreedyBestFirstHeuristic3::operator()( const Puzzle &p ) const {
+  return 1.0;
+}
 
 /* Finds puzzle p in a list of search nodes */
 SearchNode *GreedyBestFirstGraphSearch::findNodeWithPuzzle(
@@ -195,3 +198,4 @@ PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
   result->solutionExists = false;
   return result;
 }
+

@@ -20,6 +20,11 @@ public:
     double operator()( const Puzzle &p ) const;
 };
 
+class GreedyBestFirstHeuristic3 : public f_function {
+public:
+    double operator()( const Puzzle &p ) const;
+};
+
 class GreedyBestFirstGraphSearch : public Searcher {
 private:
 
