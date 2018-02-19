@@ -19,18 +19,26 @@
 
 using namespace std;
 
-/* Heuristic function */
+/* Heuristic functions ********************************************************/
+
+
+/* Main heuristic used for standard execution */
 double GreedyBestFirstHeuristic1::operator()( const Puzzle &p ) const {
   return (( p.m_quota - p.m_score ) / static_cast<double>(p.m_quota));
 }
 
+
+/* Bonus heuristic used for bonus assignment */
 double GreedyBestFirstHeuristic2::operator()( const Puzzle &p ) const {
   return 3.0 / ( p.m_score < 1u ? 1u : p.m_score );
 }
 
+
+/* Bonus heuristic used for bonus assignment */
 double GreedyBestFirstHeuristic3::operator()( const Puzzle &p ) const {
   return 1.0;
 }
+
 
 /* Finds puzzle p in a list of search nodes */
 SearchNode *GreedyBestFirstGraphSearch::findNodeWithPuzzle(

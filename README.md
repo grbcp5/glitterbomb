@@ -10,6 +10,8 @@ CS5400.
 
 The assignment description can be found at: <http://web.mst.edu/~tauritzd/courses/cs5400/sp2018/puzzle.html>
 
+**Bonus:** This assignment fulfills the assignment 3 bonus requirement.
+
 ## Building
 
 A makefile is included as part of the repository to compile properly
