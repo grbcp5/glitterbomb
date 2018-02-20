@@ -257,3 +257,38 @@ bool MinHeapComparator::operator()(
 
   return result;
 }
+
+
+/* Finds puzzle p in a list of search nodes */
+SearchNode *Searcher::findNodeWithPuzzle(
+    const std::vector< SearchNode * > &nodes,
+    Puzzle *p
+) const {
+
+  Puzzle *state;
+
+  for ( int i = 0; i < nodes.size(); ++i ) {
+
+    state = nodes[ i ]->getState();
+
+    if ( *state == *p ) {
+
+      delete state;
+
+      return nodes[ i ];
+    }
+
+    delete state;
+  }
+
+  return NULL;
+}
+
+
+/* Finds puzzle p in a list of search nodes */
+bool Searcher::contains(
+    const std::vector< SearchNode * > &nodes,
+    Puzzle *p
+) const {
+  return findNodeWithPuzzle( nodes, p ) != NULL;
+}

@@ -104,6 +104,16 @@ struct MinHeapComparator {
 class Searcher {
 public:
 
+    SearchNode *findNodeWithPuzzle(
+        const std::vector< SearchNode * > &nodes,
+        Puzzle *p
+    ) const;
+
+    bool contains(
+        const std::vector< SearchNode * > &nodes,
+        Puzzle *p
+    ) const;
+
     virtual PuzzleSolution *search( Puzzle *puzzle ) const = 0;
 
     virtual ~Searcher() {};

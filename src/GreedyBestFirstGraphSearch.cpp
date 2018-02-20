@@ -40,41 +40,6 @@ double GreedyBestFirstHeuristic3::operator()( const Puzzle &p ) const {
 }
 
 
-/* Finds puzzle p in a list of search nodes */
-SearchNode *GreedyBestFirstGraphSearch::findNodeWithPuzzle(
-    const std::vector< SearchNode * > &nodes,
-    Puzzle *p
-) const {
-
-  Puzzle *state;
-
-  for ( int i = 0; i < nodes.size(); ++i ) {
-
-    state = nodes[ i ]->getState();
-
-    if ( *state == *p ) {
-
-      delete state;
-
-      return nodes[ i ];
-    }
-
-    delete state;
-  }
-
-  return NULL;
-}
-
-
-/* Finds puzzle p in a list of search nodes */
-bool GreedyBestFirstGraphSearch::contains(
-    const std::vector< SearchNode * > &nodes,
-    Puzzle *p
-) const {
-  return findNodeWithPuzzle( nodes, p ) != NULL;
-}
-
-
 /* Executes search */
 PuzzleSolution *GreedyBestFirstGraphSearch::search( Puzzle *puzzle ) const {
 

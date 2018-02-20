@@ -26,18 +26,6 @@ public:
 };
 
 class GreedyBestFirstGraphSearch : public Searcher {
-private:
-
-    SearchNode *findNodeWithPuzzle(
-        const std::vector< SearchNode * > &nodes,
-        Puzzle *p
-    ) const;
-
-    bool contains(
-        const std::vector< SearchNode * > &nodes,
-        Puzzle *p
-    ) const;
-
 public:
 
     PuzzleSolution *search( Puzzle *puzzle ) const;
