@@ -64,7 +64,7 @@ extern "C" {
 extern const char *DEFAULT_PUZZLE_FILE_NAMES[];
 }
 
-#define DEFAULT_SEARCH_ALGORITHM GBFGS_CMD_FLAG
+#define DEFAULT_SEARCH_ALGORITHM ASGS_CMD_FLAG
 
 #define SHOW_DEFAULTS_CMD_FLAG (1u << 6)
 #define SHOW_HELP_CMD_FLAG (1u << 7)
@@ -80,6 +80,8 @@ extern const char *DEFAULT_PUZZLE_FILE_NAMES[];
 #define IDDFS_ARG_SHORT "--iddfs"
 #define GBFGS_ARG_FULL "--greedybestfirstgraphsearch"
 #define GBFGS_ARG_SHORT "--gbfgs"
+#define ASGS_ARG_FULL "--a*graphsearch"
+#define ASGS_ARG_SHORT "--a*gs"
 
 /* Function Declarations ******************************************************/
 

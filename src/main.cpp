@@ -142,6 +142,12 @@ int main( const int argc, const char **argv ) {
       cout << "Using " << GBFGS_NAME << " algorithm." << endl;
       searcher = new GreedyBestFirstGraphSearch();
 
+    } else if ( cmdArgs->flags & ASGS_CMD_FLAG) {
+
+      cout << "Using " << ASGS_NAME << " algorithm." << endl;
+      cout << "Not implemented.";
+      return 0;
+
     } else {
 
       /* Default */

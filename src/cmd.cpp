@@ -113,6 +113,14 @@ CmdArgs *getCommandLineArguments( const int argc, const char **argv ) {
         inSolutionFileList = false;
         argHandled = true;
 
+        /* Check for A* */
+      } else if ( strcmp( arg, ASGS_ARG_FULL ) == 0 ||
+                  strcmp( arg, ASGS_ARG_SHORT ) == 0 ) {
+
+        result->flags |= ASGS_CMD_FLAG;
+        inPuzzleFileList = false;
+        inSolutionFileList = false;
+        argHandled = true;
       }
     }
 
