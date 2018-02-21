@@ -9,6 +9,7 @@
 #include "BreadthFirstSearch.h"
 #include "ID_DepthLimitedSearch.h"
 #include "GreedyBestFirstGraphSearch.h"
+#include "AStarGraphSearch.h"
 #include "cmd.h"
 #include "GlitterbombConstants.h"
 
@@ -145,8 +146,7 @@ int main( const int argc, const char **argv ) {
     } else if ( cmdArgs->flags & ASGS_CMD_FLAG) {
 
       cout << "Using " << ASGS_NAME << " algorithm." << endl;
-      cout << "Not implemented.";
-      return 0;
+      searcher = new AStarGraphSearch();
 
     } else {
 
