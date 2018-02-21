@@ -27,7 +27,8 @@ double AStarF::operator()( const Puzzle &p ) const {
       p.m_swaps_used
       +
       /* h(n) */
-      ( p.m_quota - p.m_score ) / 9.0;
+      ( p.m_quota - p.m_score )
+      * ( p.m_num_swaps ) / static_cast<double>( p.m_quota );
 }
 
 
