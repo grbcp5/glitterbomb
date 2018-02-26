@@ -390,7 +390,7 @@ vector< Move * > *getLegalMoves( const Puzzle *p ) {
   /* Local Variables */
   vector< Move * > *result = new vector< Move * >();
   uint32 points( 0 );
-  vector< Point > *matched = new vector< Point >();
+  vector< Point > *matched;
 
   /* Return if no swaps available */
   if ( p->m_swaps_used >= p->m_num_swaps ) {
@@ -415,8 +415,8 @@ vector< Move * > *getLegalMoves( const Puzzle *p ) {
         if ( c == p->m_grid_width - 1 && DIRS[ d ] == RIGHT ) {
           continue;
         }
-
-        matched->clear();
+  
+        matched = new vector< Point >();
 
         /* Find how many points are generated from swap */
         points = resultingPointsFromMove(
@@ -437,14 +437,14 @@ vector< Move * > *getLegalMoves( const Puzzle *p ) {
               points,
               matched
           ));
+  
+        }
+  
+        delete matched;
 
-        } // if points > 0
       }  // d
     } // c
   } // r
-
-  matched->clear();
-  delete matched;
 
   // Return list of legal moves
   return result;
